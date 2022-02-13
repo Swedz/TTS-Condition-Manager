@@ -1,0 +1,88 @@
+<!-- Swedz's D&D 5e Condition Scripter [Version 1.0] for Tabletop Simulator -->
+
+<Defaults>
+  <Button class="closeButton" width="25" height="25" rectAlignment="UpperRight" color="#eeeeee" offsetXY="-3 -3" />
+  <Button class="conditionToggle" color="White" colors="#C8C8C8|#888888|#888888|#888888" fontSize="10" />
+</Defaults>
+
+<Panel id="ConditionsPanel"
+  active="false"
+  width="500"
+  height="510"
+  rectAlignment="MiddleCenter"
+  returnToOriginalPositionWhenReleased="false"
+  allowDragging="true"
+  color="#bbbbbb">
+
+  <Text rectAlignment="UpperLeft" height="50" fontSize="20">Conditions</Text>
+  <Button id="close" class="closeButton" onClick="8b6de7/closeConditionMenu">X</Button>
+
+  <Text rectAlignment="UpperLeft" height="50" fontSize="20" offsetXY="0 -50">Inactive</Text>
+  <GridLayout padding="5 5 0 5" spacing="5 5" cellSize="94 25" offsetXY="0 -100">
+    <Button id="bane_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Bane</Button>
+    <Button id="banished_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Banished</Button>
+    <Button id="bladesinging_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Bladesinging</Button>
+    <Button id="blessed_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Blessed</Button>
+    <Button id="blinded_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Blinded</Button>
+    <Button id="blur_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Blur</Button>
+    <Button id="channeldivinity_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Channel Divinity</Button>
+    <Button id="charmed_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Charmed</Button>
+    <Button id="concentrating_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Concentrating</Button>
+    <Button id="deafened_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Deafened</Button>
+    <Button id="dodging_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Dodging</Button>
+    <Button id="faeriefire_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Faerie Fire</Button>
+    <Button id="frightened_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Frightened</Button>
+    <Button id="grappled_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Grappled</Button>
+    <Button id="hasted_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Hasted</Button>
+    <Button id="heatmetal_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Heat Metal</Button>
+    <Button id="hexed_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Hexed</Button>
+    <Button id="huntersmark_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Hunter's Mark</Button>
+    <Button id="incapacitated_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Incapacitated</Button>
+    <Button id="invisible_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Invisible</Button>
+    <Button id="mirrorimage_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Mirror Image</Button>
+    <Button id="paralyzed_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Paralyzed</Button>
+    <Button id="petrified_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Petrified</Button>
+    <Button id="poisoned_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Poisoned</Button>
+    <Button id="prone_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Prone</Button>
+    <Button id="raging_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Raging</Button>
+    <Button id="restrained_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Restrained</Button>
+    <Button id="shield_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Shield</Button>
+    <Button id="stunned_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Stunned</Button>
+    <Button id="unconscious_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Unconscious</Button>
+  </GridLayout>
+
+  <Text rectAlignment="UpperLeft" height="50" fontSize="20" offsetXY="0 -280">Active</Text>
+  <GridLayout padding="5 5 0 5" spacing="5 5" cellSize="94 25" offsetXY="0 -330">
+    <Button id="bane_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Bane</Button>
+    <Button id="banished_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Banished</Button>
+    <Button id="bladesinging_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Bladesinging</Button>
+    <Button id="blessed_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Blessed</Button>
+    <Button id="blinded_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Blinded</Button>
+    <Button id="blur_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Blur</Button>
+    <Button id="channeldivinity_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Channel Divinity</Button>
+    <Button id="charmed_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Charmed</Button>
+    <Button id="concentrating_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Concentrating</Button>
+    <Button id="deafened_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Deafened</Button>
+    <Button id="dodging_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Dodging</Button>
+    <Button id="faeriefire_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Faerie Fire</Button>
+    <Button id="frightened_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Frightened</Button>
+    <Button id="grappled_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Grappled</Button>
+    <Button id="hasted_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Hasted</Button>
+    <Button id="heatmetal_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Heat Metal</Button>
+    <Button id="hexed_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Hexed</Button>
+    <Button id="huntersmark_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Hunter's Mark</Button>
+    <Button id="incapacitated_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Incapacitated</Button>
+    <Button id="invisible_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Invisible</Button>
+    <Button id="mirrorimage_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Mirror Image</Button>
+    <Button id="paralyzed_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Paralyzed</Button>
+    <Button id="petrified_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Petrified</Button>
+    <Button id="poisoned_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Poisoned</Button>
+    <Button id="prone_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Prone</Button>
+    <Button id="raging_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Raging</Button>
+    <Button id="restrained_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Restrained</Button>
+    <Button id="shield_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Shield</Button>
+    <Button id="stunned_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Stunned</Button>
+    <Button id="unconscious_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Unconscious</Button>
+  </GridLayout>
+
+</Panel>
