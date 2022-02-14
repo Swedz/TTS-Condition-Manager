@@ -1,8 +1,9 @@
-<!-- Swedz's D&D 5e Condition Scripter [Version 1.0] for Tabletop Simulator -->
+<!-- Swedz's D&D 5e Condition Scripter [Version 1.1] for Tabletop Simulator -->
 
 <Defaults>
+  <Text class="header" rectAlignment="UpperLeft" height="50" fontSize="20" fontStyle="Bold" />
   <Button class="closeButton" width="25" height="25" rectAlignment="UpperRight" color="#eeeeee" offsetXY="-3 -3" />
-  <Button class="conditionToggle" color="White" colors="#C8C8C8|#888888|#888888|#888888" fontSize="10" />
+  <Button class="conditionToggle" color="White" colors="#C8C8C8|#888888|#888888|#888888" fontSize="10" fontStyle="Bold" />
 </Defaults>
 
 <Panel id="ConditionsPanel"
@@ -14,11 +15,11 @@
   allowDragging="true"
   color="#bbbbbb">
 
-  <Text rectAlignment="UpperLeft" height="50" fontSize="20">Conditions</Text>
+  <Text class="header">Conditions</Text>
   <Button id="close" class="closeButton" onClick="8b6de7/closeConditionMenu">X</Button>
 
-  <Text rectAlignment="UpperLeft" height="50" fontSize="20" offsetXY="0 -50">Inactive</Text>
-  <GridLayout padding="5 5 0 5" spacing="5 5" cellSize="94 25" offsetXY="0 -100">
+  <Text id="title_inactive" class="header" offsetXY="0 -50">Inactive</Text>
+  <GridLayout id="gridlayout_inactive" padding="5 5 0 5" spacing="5 5" cellSize="94 25" offsetXY="0 -100">
     <Button id="bane_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Bane</Button>
     <Button id="banished_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Banished</Button>
     <Button id="bladesinging_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Bladesinging</Button>
@@ -30,6 +31,7 @@
     <Button id="concentrating_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Concentrating</Button>
     <Button id="deafened_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Deafened</Button>
     <Button id="dodging_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Dodging</Button>
+    <Button id="exhausted_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Exhausted</Button>
     <Button id="faeriefire_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Faerie Fire</Button>
     <Button id="frightened_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Frightened</Button>
     <Button id="grappled_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Grappled</Button>
@@ -47,12 +49,13 @@
     <Button id="raging_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Raging</Button>
     <Button id="restrained_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Restrained</Button>
     <Button id="shield_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Shield</Button>
+    <Button id="slowed_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Slowed</Button>
     <Button id="stunned_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Stunned</Button>
     <Button id="unconscious_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Unconscious</Button>
   </GridLayout>
 
-  <Text rectAlignment="UpperLeft" height="50" fontSize="20" offsetXY="0 -280">Active</Text>
-  <GridLayout padding="5 5 0 5" spacing="5 5" cellSize="94 25" offsetXY="0 -330">
+  <Text id="title_active" class="header" offsetXY="0 -280">Active</Text>
+  <GridLayout id="gridlayout_active" padding="5 5 0 5" spacing="5 5" cellSize="94 25" offsetXY="0 -330">
     <Button id="bane_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Bane</Button>
     <Button id="banished_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Banished</Button>
     <Button id="bladesinging_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Bladesinging</Button>
@@ -64,6 +67,7 @@
     <Button id="concentrating_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Concentrating</Button>
     <Button id="deafened_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Deafened</Button>
     <Button id="dodging_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Dodging</Button>
+    <Button id="exhausted_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Exhausted</Button>
     <Button id="faeriefire_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Faerie Fire</Button>
     <Button id="frightened_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Frightened</Button>
     <Button id="grappled_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Grappled</Button>
@@ -81,6 +85,7 @@
     <Button id="raging_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Raging</Button>
     <Button id="restrained_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Restrained</Button>
     <Button id="shield_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Shield</Button>
+    <Button id="slowed_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Slowed</Button>
     <Button id="stunned_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Stunned</Button>
     <Button id="unconscious_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Unconscious</Button>
   </GridLayout>

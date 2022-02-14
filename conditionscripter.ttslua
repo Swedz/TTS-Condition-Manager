@@ -1,11 +1,13 @@
--- Swedz's D&D 5e Condition Scripter [Version 1.0] for Tabletop Simulator
+-- Swedz's D&D 5e Condition Scripter [Version 1.1] for Tabletop Simulator
 
-tag_figure = "dndconditions_conditionable"
-tag_condition_prefix = "dndconditions_conditionable_"
+-- These are core variables for the script to work. If these are edited, things may break. Do not touch these values.
+script_guid = self.getGUID()
 button_suffix_condition_active = "_active"
 button_suffix_condition_inactive = "_inactive"
+selected_object = nil
 
--- This is the conditions table. Edit this for alternative options.
+-- The conditions table
+-- When adding/removing/editing conditions, the UI script must be edited as well to reflect the changes.
 conditions = {
   bane = {
     name = "Bane",
@@ -62,6 +64,12 @@ conditions = {
     color = Color(145 / 255, 100 / 255, 100 / 255),
     description = "When you take the Dodge action, you focus entirely on avoiding attacks. Until the start of your next turn, any Attack roll made against you has disadvantage if you can see the attacker, and you make Dexterity Saving Throws with advantage. You lose this benefit if you are Incapacitated (as explained in Conditions ) or if your speed drops to 0."
   },
+  exhausted = {
+    name = "Exhausted",
+    color = Color(145 / 255, 100 / 255, 100 / 255),
+    description = "Some Special Abilities and environmental Hazards, such as starvation and the long-­term Effects of freezing or scorching temperatures, can lead to a Special condition called exhaustion. Exhaustion is measured in six levels. An Effect can give a creature one or more levels of exhaustion, as specified in the effect’s description.\n\nIf an already exhausted creature suffers another Effect that causes exhaustion, its current level of exhaustion increases by the amount specified in the effect’s description.\n\nA creature suffers the Effect of its current level of exhaustion as well as all lower levels. For example, a creature suffering level 2 exhaustion has its speed halved and has disadvantage on Ability Checks.\n\nAn Effect that removes exhaustion reduces its level as specified in the effect’s description, with all exhaustion Effects Ending if a creature’s exhaustion level is reduced below 1.\n\nFinishing a Long Rest reduces a creature’s exhaustion level by 1, provided that the creature has also ingested some food and drink.",
+    counter = {1, 2, 3, 4, 5, 6}
+  },
   faeriefire = {
     name = "Faerie Fire",
     color = Color(254 / 255, 255 / 255, 181 / 255),
@@ -110,7 +118,8 @@ conditions = {
   mirrorimage = {
     name = "Mirror Image",
     color = Color(218 / 255, 163 / 255, 255 / 255),
-    description = "Three illusory duplicates of yourself appear in your space. Until the spell ends, the duplicates move with you and mimic your actions, shifting position so it's impossible to track which image is real. You can use your action to dismiss the illusory duplicates.\n\nEach time a creature targets you with an attack during the spell's duration, roll a d20 to determine whether the attack instead targets one of your duplicates.\n\nIf you have three duplicates, you must roll a 6 or higher to change the attack's target to a duplicate. With two duplicates, you must roll an 8 or higher. With one duplicate, you must roll an 11 or higher.\n\nA duplicate's AC equals 10 + your Dexterity modifier. If an attack hits a duplicate, the duplicate is destroyed. A duplicate can be destroyed only by an attack that hits it. It ignores all other damage and effects. The spell ends when all three duplicates are destroyed.\n\nA creature is unaffected by this spell if it can't see, if it relies on senses other than sight, such as blindsight, or if it can perceive illusions as false, as with truesight."
+    description = "Three illusory duplicates of yourself appear in your space. Until the spell ends, the duplicates move with you and mimic your actions, shifting position so it's impossible to track which image is real. You can use your action to dismiss the illusory duplicates.\n\nEach time a creature targets you with an attack during the spell's duration, roll a d20 to determine whether the attack instead targets one of your duplicates.\n\nIf you have three duplicates, you must roll a 6 or higher to change the attack's target to a duplicate. With two duplicates, you must roll an 8 or higher. With one duplicate, you must roll an 11 or higher.\n\nA duplicate's AC equals 10 + your Dexterity modifier. If an attack hits a duplicate, the duplicate is destroyed. A duplicate can be destroyed only by an attack that hits it. It ignores all other damage and effects. The spell ends when all three duplicates are destroyed.\n\nA creature is unaffected by this spell if it can't see, if it relies on senses other than sight, such as blindsight, or if it can perceive illusions as false, as with truesight.",
+    counter = {3, 2, 1}
   },
   paralyzed = {
     name = "Paralyzed",
@@ -147,6 +156,11 @@ conditions = {
     color = Color(161 / 255, 255 / 255, 246 / 255),
     description = "An invisible barrier of magical force appears and protects you. Until the start of your next turn, you have a +5 bonus to AC, including against the triggering attack, and you take no damage from magic missile."
   },
+  slowed = {
+    name = "Slowed",
+    color = Color(53 / 255, 49 / 255, 112 / 255),
+    description = "You alter time around up to six creatures of your choice in a 40-foot cube within range. Each target must succeed on a Wisdom saving throw or be affected by this spell for the duration.\n\nAn affected target's speed is halved, it takes a −2 penalty to AC and Dexterity saving throws, and it can't use reactions. On its turn, it can use either an action or a bonus action, not both. Regardless of the creature's abilities or magic items, it can't make more than one melee or ranged attack during its turn.\n\nIf the creature attempts to cast a spell with a casting time of 1 action, roll a d20. On an 11 or higher, the spell doesn't take effect until the creature's next turn, and the creature must use its action on that turn to complete the spell. If it can't, the spell is wasted.\n\nA creature affected by this spell makes another Wisdom saving throw at the end of each of its turns. On a successful save, the effect ends for it."
+  },
   stunned = {
     name = "Stunned",
     color = Color(181 / 255, 251 / 255, 255 / 255),
@@ -158,22 +172,43 @@ conditions = {
     description = "An unconscious creature is incapacitated, can't move or speak, and is unaware of its surroundings.\n\nThe creature drops whatever it's holding and falls prone.\n\nThe creature automatically fails Strength and Dexterity saving throws.\n\nAttack rolls against the creature have advantage.\n\nAny attack that hits the creature is a critical hit if the attacker is within 5 feet of the creature."
   }
 }
+conditions_count = 0
 
-selected_object = nil
+-- Data used for keeping track of conditions and their metadata
+object_conditions = {}
+object_condition_metadata = {}
 
 -- Triggered when the script loads.
-function onLoad()
+function onLoad(script_state)
+  -- Count how many conditions we have loaded, so we can use it later
+  conditions_count = sizeOf(conditions)
+
+  -- Load in our saved data
+  local state = default(JSON.decode(script_state), {})
+  object_conditions = default(state["object_conditions"], {})
+  object_condition_metadata = default(state["object_condition_metadata"], {})
+
   -- Set up the global context menu to reload the script, in case some weird stuff happen
   clearContextMenu()
   addContextMenuItem("Run Condition Script", runScript, false, false)
+
   -- Runs the script, so we don't need to manually do so each load
   runScript(nil)
 end
 
+-- Triggered when the script is being saved
+function onSave()
+  local state = {
+    object_conditions = object_conditions,
+    object_condition_metadata = object_condition_metadata
+  }
+  return JSON.encode(state)
+end
+
 -- Run the condition script. This is either triggered by load clicking the run button in the table's global context menu.
 function runScript(player_color)
-  for k, obj in pairs(getAllObjects()) do
-    if obj.hasTag(tag_figure) then
+  for _, obj in ipairs(getAllObjects()) do
+    if isFigurine(obj) then
       setupConditionableObject(obj)
     end
   end
@@ -181,9 +216,6 @@ end
 
 -- Sets up the object to be conditionable.
 function setupConditionableObject(obj)
-  -- Grant the tag (even if it already has it, doesn't matter)
-  obj.addTag(tag_figure)
-
   -- Creates the context menu items. Removes them before, just in case it already existed for this object
   obj.clearContextMenu()
   obj.addContextMenuItem("Conditions", function(player_color) openConditionMenu(player_color, obj) end, false)
@@ -193,13 +225,8 @@ function setupConditionableObject(obj)
   obj.clearButtons()
 
   -- Creates the active condition displays
-  local index = 0
-  for _, tag in ipairs(obj.getTags()) do
-    if tag:find(tag_condition_prefix, 1, #tag_condition_prefix) then
-      local condition_id = string.gsub(tag, tag_condition_prefix, "")
-      createConditionDisplay(obj, condition_id, index)
-      index = index + 1
-    end
+  for index, condition_id in ipairs(getActiveConditions(obj)) do
+    createConditionDisplay(obj, condition_id, index)
   end
 end
 
@@ -207,22 +234,67 @@ end
 -- The "condition display" is the button that appears above figurines when they have conditions.
 function createConditionDisplay(obj, condition_id, index)
   local condition = conditions[condition_id]
-  local y_pos = 2.2 + (index * 0.3) -- TODO change height to use relative height for model
-  obj.createButton({
-    click_function = "clickedConditionDisplay",
-    function_owner = self,
-    label = condition["name"],
-    position = {0, y_pos, 0},
-    rotation = {270, 0, 0},
-    scale = {0.5, 0.5, 0.5},
-    color = condition["color"],
-    font_color = {1, 1, 1},
-    width = 1500,
-    height = 250,
-    font_size = 200,
-    tooltip = condition["description"],
-    alignment = 3
-  })
+
+  local y_pos = 2.2 + ((index - 1) * 0.3) -- Should probably use relative height of the object instead of 2.2, but it seems to work for most models.
+
+  if condition["counter"] == nil then
+    obj.createButton({
+      click_function = "clickedConditionDisplay",
+      function_owner = self,
+      label = condition["name"],
+      position = {0, y_pos, 0},
+      rotation = {270, 0, 0},
+      scale = {0.5, 0.5, 0.5},
+      color = condition["color"],
+      hover_color = condition["color"],
+      press_color = condition["color"],
+      font_color = {1, 1, 1},
+      width = 1500,
+      height = 250,
+      font_size = 200,
+      tooltip = condition["name"] .. ":\n\n" .. condition["description"],
+      alignment = 3
+    })
+  else
+    obj.createButton({
+      click_function = "clickedConditionDisplay",
+      function_owner = self,
+      label = condition["name"],
+      position = {-0.13, y_pos, 0},
+      rotation = {270, 0, 0},
+      scale = {0.5, 0.5, 0.5},
+      color = condition["color"],
+      hover_color = condition["color"],
+      press_color = condition["color"],
+      font_color = {1, 1, 1},
+      width = 1250,
+      height = 250,
+      font_size = 200,
+      tooltip = condition["name"] .. ":\n\n" .. condition["description"]
+    })
+
+    local counter_function_name = obj.getGUID() .. "_clickedConditionCounter_" .. condition_id
+    _G[counter_function_name] = function(obj, player_color, alt_click)
+      clickedConditionCounter(obj, player_color, alt_click, condition_id)
+    end
+    local counter_array = condition["counter"]
+    local counter = default(getConditionMetadata(obj, condition_id)["counter"], counter_array[1])
+    obj.createButton({
+      click_function = counter_function_name,
+      function_owner = self,
+      label = counter,
+      position = {0.65, y_pos, 0},
+      rotation = {270, 0, 0},
+      scale = {0.5, 0.5, 0.5},
+      color = condition["color"],
+      hover_color = condition["color"],
+      press_color = condition["color"],
+      font_color = {1, 1, 1},
+      width = 250,
+      height = 250,
+      font_size = 200
+    })
+  end
 end
 
 -- Triggered when the condition display is clicked.
@@ -231,17 +303,53 @@ function clickedConditionDisplay(obj, player_color, alt_click)
   -- do nothing at the moment
 end
 
+-- Triggered when the condition counter is clicked.
+function clickedConditionCounter(obj, player_color, alt_click, condition_id)
+  -- Figure out what is the next counter value in the array
+  local counter_array = conditions[condition_id]["counter"]
+  local metadata = getConditionMetadata(obj, condition_id)
+  local current_value = default(metadata["counter"], counter_array[1])
+  local current_index = default(indexOf(counter_array, current_value), 1)
+  local max_index = sizeOf(counter_array)
+  local next_index = current_index + 1
+  if next_index > max_index then
+    next_index = 1
+  end
+  local next_value = counter_array[next_index]
+  -- Update the metadata value to use the next value in the array
+  metadata["counter"] = next_value
+  setConditionMetadata(obj, condition_id, metadata)
+
+  -- Update the display for the conditions
+  setupConditionableObject(obj)
+end
+
 -- Opens the condition UI for the object.
 function openConditionMenu(player_color, obj)
   selected_object = obj
   UI.setXml(self.UI.getXml(), {})
 
+  -- Calculate how tall the menu should be and where certain things should be offset to.
+  -- The three 50's are for the text labels. Each one takes up 50 pixels of height.
+  -- We allow 5 conditions per row, so we divide the condition count by 5.
+  -- Each condition button is 25 pixels tall and has 5 pixels of padding on the bottom.
+  -- We have two sections where buttons can be, so we multiply by 2.
+  local dimensions_text_height = 50
+  local dimensions_gridlayout_height = math.ceil(conditions_count / 5) * 30
+  local dimensions_height = (dimensions_text_height * 3) + (dimensions_gridlayout_height * 2)
+  local dimensions_active_title_yoffset = (dimensions_text_height * 2) + dimensions_gridlayout_height
+  local dimensions_active_gridlayout_yoffset = (dimensions_text_height * 3) + dimensions_gridlayout_height
+  UI.setAttribute("ConditionsPanel", "height", dimensions_height)
+  UI.setAttribute("title_active", "offsetXY", "0 -" .. dimensions_active_title_yoffset)
+  UI.setAttribute("gridlayout_active", "offsetXY", "0 -" .. dimensions_active_gridlayout_yoffset)
+
+  -- Hide and show which buttons depending on what conditions are active.
   for condition_id, condition in pairs(conditions) do
     local active_id = condition_id .. button_suffix_condition_active
     local inactive_id = condition_id .. button_suffix_condition_inactive
     UI.setAttribute(active_id, "color", "#" .. condition["color"]:toHex(false))
     UI.setAttribute(inactive_id, "color", "#" .. condition["color"]:toHex(false))
-    if obj.hasTag(tag_condition_prefix .. condition_id) then
+    if hasCondition(obj, condition_id) then
       UI.setAttribute(active_id, "active", "true")
       UI.setAttribute(inactive_id, "active", "false")
     else
@@ -250,8 +358,12 @@ function openConditionMenu(player_color, obj)
     end
   end
 
-  UI.show("ConditionsPanel")
-  UI.setAttribute("ConditionsPanel", "active", "true")
+  -- Show the menu itself
+  -- We have to wait since TTS is glitchy
+  Wait.frames(function()
+    UI.show("ConditionsPanel")
+    UI.setAttribute("ConditionsPanel", "active", "true")
+  end, 1)
 end
 
 -- Triggered when the X button is pressed in the UI.
@@ -269,7 +381,7 @@ end
 
 -- This will hide the clicked button (inactive condition) and show the active condition button.
 function addCondition(obj, condition_id)
-  obj.addTag(tag_condition_prefix .. condition_id)
+  setCondition(obj, condition_id, true)
   setupConditionableObject(obj)
 
   UI.show(condition_id .. button_suffix_condition_active)
@@ -284,7 +396,9 @@ end
 
 -- This will hide the clicked button (active condition) and show the inactive condition button.
 function removeCondition(obj, condition_id)
-  obj.removeTag(tag_condition_prefix .. condition_id)
+  setCondition(obj, condition_id, false)
+  setConditionMetadata(obj, condition_id, nil)
+
   setupConditionableObject(obj)
 
   UI.show(condition_id .. button_suffix_condition_inactive)
@@ -294,7 +408,8 @@ end
 -- Remove all of the conditions from the object.
 function clearConditions(obj)
   for condition_id, condition in pairs(conditions) do
-    obj.removeTag(tag_condition_prefix .. condition_id)
+    setCondition(obj, condition_id, false)
+    setConditionMetadata(obj, condition_id, nil)
     UI.show(condition_id .. button_suffix_condition_inactive)
     UI.hide(condition_id .. button_suffix_condition_active)
   end
@@ -305,7 +420,85 @@ end
 
 -- Track when new figurines are spawned in. Automatically set them up to be conditionable.
 function onObjectSpawn(obj)
-  if obj.type == "Figurine" then
+  if isFigurine(obj) then
     setupConditionableObject(obj)
+  end
+end
+
+-- Utility methods
+
+-- Get the number of elements in the table
+function sizeOf(table)
+  local count = 0
+  for k, v in pairs(table) do
+    count = count + 1
+  end
+  return count
+end
+
+-- Get the index of an element in the table
+function indexOf(table, element)
+  for index, e in ipairs(table) do
+    if e == element then
+      return index
+    end
+  end
+end
+
+-- Check if the object is a figurine
+function isFigurine(obj)
+  return obj.type == "Figurine"
+end
+
+-- Modify the condition state for an object
+function setCondition(obj, condition_id, active)
+  local object_data = default(object_conditions[obj.getGUID()], {})
+  if active then
+    object_data[condition_id] = true
+  else
+    object_data[condition_id] = nil
+  end
+  object_conditions[obj.getGUID()] = object_data
+end
+
+-- Check if the object has the following condition
+function hasCondition(obj, condition_id)
+  local object_data = default(object_conditions[obj.getGUID()], {})
+  return object_data[condition_id] != nil
+end
+
+-- Get all of the active conditions for an object
+-- Returns a table of {id = condition_id} relations
+function getActiveConditions(obj)
+  local conditions_active = {}
+  local index = 1
+  for condition_id, condition in pairs(conditions) do
+    if hasCondition(obj, condition_id) then
+      conditions_active[index] = condition_id
+      index = index + 1
+    end
+  end
+  return conditions_active
+end
+
+-- Get the condition metadata for the object with the specified condition
+function getConditionMetadata(obj, condition_id)
+  local object_data = default(object_condition_metadata[obj.getGUID()], {})
+  return default(object_data[condition_id], {})
+end
+
+-- Update the object's condition metadata for the condition to be the metadata specified
+function setConditionMetadata(obj, condition_id, metadata)
+  local object_data = default(object_condition_metadata[obj.getGUID()], {})
+  object_data[condition_id] = metadata
+  object_condition_metadata[obj.getGUID()] = object_data
+end
+
+-- Return either the value or the default_value. If the value is nil, the default_value is returned.
+function default(value, default_value)
+  if value == nil then
+    return default_value
+  else
+    return value
   end
 end
