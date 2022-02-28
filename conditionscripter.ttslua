@@ -1,4 +1,4 @@
--- Swedz's D&D 5e Condition Scripter [Version 1.1] for Tabletop Simulator
+-- Swedz's D&D 5e Condition Scripter [Version 1.2] for Tabletop Simulator
 
 -- These are core variables for the script to work. If these are edited, things may break. Do not touch these values.
 script_guid = self.getGUID()
@@ -150,6 +150,11 @@ conditions = {
     name = "Restrained",
     color = Color(0 / 255, 121 / 255, 128 / 255),
     description = "A restrained creature's speed becomes 0, and it can't benefit from any bonus to its speed.\n\nAttack rolls against the creature have advantage, and the creature's attack rolls have disadvantage.\n\nThe creature has disadvantage on Dexterity saving throws."
+  },
+  shadowofmoil = {
+    name = "Shadow of Moil",
+    color = Color(88 / 255, 28 / 255, 148 / 255),
+    description = "Flame-like shadows wreathe your body until the spell ends, causing you to become heavily obscured to others. The shadows turn dim light within 10 feet of you into darkness, and bright light in the same area to dim light.\n\nUntil the spell ends, you have resistance to radiant damage. In addition, whenever a creature within 10 feet of you hits you with an attack, the shadows lash out at that creature, dealing it 2d8 necrotic damage."
   },
   shield = {
     name = "Shield",
