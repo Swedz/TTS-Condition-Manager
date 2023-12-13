@@ -1,4 +1,4 @@
--- Swedz's D&D 5e Condition Scripter [Version 1.2] for Tabletop Simulator
+-- Swedz's D&D 5e Condition Scripter [Version 1.3] for Tabletop Simulator
 
 -- These are core variables for the script to work. If these are edited, things may break. Do not touch these values.
 script_guid = self.getGUID()
@@ -241,6 +241,12 @@ function createConditionDisplay(obj, condition_id, index)
   local condition = conditions[condition_id]
 
   local y_pos = 2.2 + ((index - 1) * 0.3) -- Should probably use relative height of the object instead of 2.2, but it seems to work for most models.
+  
+  -- The rotations for hero forge models are different from the generic models the tabletop model mod.
+  local condition_rotation = {270, 0, 0}
+  if isHeroForgeModel(obj) then
+    condition_rotation = {0, 90, 270}
+  end
 
   if condition["counter"] == nil then
     obj.createButton({
@@ -248,7 +254,7 @@ function createConditionDisplay(obj, condition_id, index)
       function_owner = self,
       label = condition["name"],
       position = {0, y_pos, 0},
-      rotation = {270, 0, 0},
+      rotation = condition_rotation,
       scale = {0.5, 0.5, 0.5},
       color = condition["color"],
       hover_color = condition["color"],
@@ -265,8 +271,8 @@ function createConditionDisplay(obj, condition_id, index)
       click_function = "clickedConditionDisplay",
       function_owner = self,
       label = condition["name"],
-      position = {-0.13, y_pos, 0},
-      rotation = {270, 0, 0},
+      position = {0, y_pos, -0.13},
+      rotation = condition_rotation,
       scale = {0.5, 0.5, 0.5},
       color = condition["color"],
       hover_color = condition["color"],
@@ -288,8 +294,8 @@ function createConditionDisplay(obj, condition_id, index)
       click_function = counter_function_name,
       function_owner = self,
       label = counter,
-      position = {0.65, y_pos, 0},
-      rotation = {270, 0, 0},
+      position = {0, y_pos, 0.65},
+      rotation = condition_rotation,
       scale = {0.5, 0.5, 0.5},
       color = condition["color"],
       hover_color = condition["color"],
@@ -453,6 +459,11 @@ end
 -- Check if the object is a figurine
 function isFigurine(obj)
   return obj.type == "Figurine"
+end
+
+-- Check if the object is a hero forge model
+function isHeroForgeModel(obj)
+  return obj.AssetBundle != nil
 end
 
 -- Modify the condition state for an object
