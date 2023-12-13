@@ -6,6 +6,12 @@ button_suffix_condition_active = "_active"
 button_suffix_condition_inactive = "_inactive"
 selected_object = nil
 
+-- Some configuration options, if you are strong enough for it.
+config = {
+  -- Should hovering on conditions display the description?
+  condition_hover_tooltip = false
+}
+
 -- The conditions table
 -- When adding/removing/editing conditions, the UI script must be edited as well to reflect the changes.
 conditions = {
@@ -33,6 +39,11 @@ conditions = {
     name = "Blinded",
     color = Color(92 / 255, 92 / 255, 92 / 255),
     description = "A blinded creature can't see and automatically fails any ability check that requires sight.\n\nAttack rolls against the creature have advantage, and the creature's attack rolls have disadvantage."
+  },
+  bloodied = {
+    name = "Bloodied",
+    color = Color(53 / 255, 3 / 255, 3 / 255),
+    description = "A bloodied creature is one that has been reduced to less than 50% of its maximum hit points."
   },
   blur = {
     name = "Blur",
@@ -67,8 +78,8 @@ conditions = {
   exhausted = {
     name = "Exhausted",
     color = Color(145 / 255, 100 / 255, 100 / 255),
-    description = "Some Special Abilities and environmental Hazards, such as starvation and the long-­term Effects of freezing or scorching temperatures, can lead to a Special condition called exhaustion. Exhaustion is measured in six levels. An Effect can give a creature one or more levels of exhaustion, as specified in the effect’s description.\n\nIf an already exhausted creature suffers another Effect that causes exhaustion, its current level of exhaustion increases by the amount specified in the effect’s description.\n\nA creature suffers the Effect of its current level of exhaustion as well as all lower levels. For example, a creature suffering level 2 exhaustion has its speed halved and has disadvantage on Ability Checks.\n\nAn Effect that removes exhaustion reduces its level as specified in the effect’s description, with all exhaustion Effects Ending if a creature’s exhaustion level is reduced below 1.\n\nFinishing a Long Rest reduces a creature’s exhaustion level by 1, provided that the creature has also ingested some food and drink.",
-    counter = {1, 2, 3, 4, 5, 6}
+    description = "For every point of exhaustion you have, you get a -1 penalty to all saving throws, ability checks, and attacks. When you reach 10 points of exhaustion, you die.",
+    counter = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
   },
   faeriefire = {
     name = "Faerie Fire",
@@ -175,6 +186,12 @@ conditions = {
     name = "Unconscious",
     color = Color(255 / 255, 0 / 255, 0 / 255),
     description = "An unconscious creature is incapacitated, can't move or speak, and is unaware of its surroundings.\n\nThe creature drops whatever it's holding and falls prone.\n\nThe creature automatically fails Strength and Dexterity saving throws.\n\nAttack rolls against the creature have advantage.\n\nAny attack that hits the creature is a critical hit if the attacker is within 5 feet of the creature."
+  },
+  wounded = {
+    name = "Wounded",
+    color = Color(207 / 255, 51 / 255, 41 / 255),
+    description = "You have been seriously injured. What this means varies from effect to effect, so I will not be writing a description. So sorry.",
+    counter = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
   }
 }
 conditions_count = 0
@@ -248,6 +265,12 @@ function createConditionDisplay(obj, condition_id, index)
     condition_rotation = {0, 90, 270}
   end
 
+  -- The description for the condition is conditional based on the config
+  local condition_tooltip = nil
+  if config["condition_hover_tooltip"] then
+    condition_tooltip = condition["name"] .. ":\n\n" .. condition["description"]
+  end
+
   if condition["counter"] == nil then
     obj.createButton({
       click_function = "clickedConditionDisplay",
@@ -263,7 +286,7 @@ function createConditionDisplay(obj, condition_id, index)
       width = 1500,
       height = 250,
       font_size = 200,
-      tooltip = condition["name"] .. ":\n\n" .. condition["description"],
+      tooltip = condition_tooltip,
       alignment = 3
     })
   else
@@ -281,7 +304,7 @@ function createConditionDisplay(obj, condition_id, index)
       width = 1250,
       height = 250,
       font_size = 200,
-      tooltip = condition["name"] .. ":\n\n" .. condition["description"]
+      tooltip = condition_tooltip
     })
 
     local counter_function_name = obj.getGUID() .. "_clickedConditionCounter_" .. condition_id
@@ -322,9 +345,17 @@ function clickedConditionCounter(obj, player_color, alt_click, condition_id)
   local current_value = default(metadata["counter"], counter_array[1])
   local current_index = default(indexOf(counter_array, current_value), 1)
   local max_index = sizeOf(counter_array)
-  local next_index = current_index + 1
-  if next_index > max_index then
-    next_index = 1
+  local next_index = current_index
+  if alt_click then
+    next_index = next_index - 1
+    if next_index < 1 then
+      next_index = max_index
+    end
+  else
+    next_index = next_index + 1
+    if next_index > max_index then
+      next_index = 1
+    end
   end
   local next_value = counter_array[next_index]
   -- Update the metadata value to use the next value in the array

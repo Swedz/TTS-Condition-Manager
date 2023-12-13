@@ -3,7 +3,7 @@
 <Defaults>
   <Text class="header" rectAlignment="UpperLeft" height="50" fontSize="20" fontStyle="Bold" />
   <Button class="closeButton" width="25" height="25" rectAlignment="UpperRight" color="#eeeeee" offsetXY="-3 -3" />
-  <Button class="conditionToggle" color="White" colors="#C8C8C8|#888888|#888888|#888888" fontSize="10" fontStyle="Bold" />
+  <Button class="conditionToggle" color="White" colors="#C8C8C8|#888888|#888888|#888888" textOutline="#C8C8C8" fontSize="10" fontStyle="Bold" />
 </Defaults>
 
 <Panel id="ConditionsPanel"
@@ -25,6 +25,7 @@
     <Button id="bladesinging_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Bladesinging</Button>
     <Button id="blessed_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Blessed</Button>
     <Button id="blinded_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Blinded</Button>
+    <Button id="bloodied_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Bloodied</Button>
     <Button id="blur_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Blur</Button>
     <Button id="channeldivinity_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Channel Divinity</Button>
     <Button id="charmed_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Charmed</Button>
@@ -53,6 +54,7 @@
     <Button id="slowed_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Slowed</Button>
     <Button id="stunned_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Stunned</Button>
     <Button id="unconscious_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Unconscious</Button>
+    <Button id="wounded_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Wounded</Button>
   </GridLayout>
 
   <Text id="title_active" class="header" offsetXY="0 -280">Active</Text>
@@ -62,6 +64,7 @@
     <Button id="bladesinging_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Bladesinging</Button>
     <Button id="blessed_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Blessed</Button>
     <Button id="blinded_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Blinded</Button>
+    <Button id="bloodied_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Bloodied</Button>
     <Button id="blur_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Blur</Button>
     <Button id="channeldivinity_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Channel Divinity</Button>
     <Button id="charmed_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Charmed</Button>
@@ -90,6 +93,7 @@
     <Button id="slowed_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Slowed</Button>
     <Button id="stunned_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Stunned</Button>
     <Button id="unconscious_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Unconscious</Button>
+    <Button id="wounded_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Wounded</Button>
   </GridLayout>
 
 </Panel>
