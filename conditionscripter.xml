@@ -51,6 +51,7 @@
     <Button id="restrained_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Restrained</Button>
     <Button id="shadowofmoil_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Shadow of Moil</Button>
     <Button id="shield_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Shield</Button>
+    <Button id="silenced_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Silenced</Button>
     <Button id="slowed_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Slowed</Button>
     <Button id="stunned_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Stunned</Button>
     <Button id="unconscious_inactive" class="conditionToggle" onClick="8b6de7/clickAddCondition">Unconscious</Button>
@@ -90,6 +91,7 @@
     <Button id="restrained_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Restrained</Button>
     <Button id="shadowofmoil_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Shadow of Moil</Button>
     <Button id="shield_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Shield</Button>
+    <Button id="silenced_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Silenced</Button>
     <Button id="slowed_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Slowed</Button>
     <Button id="stunned_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Stunned</Button>
     <Button id="unconscious_active" class="conditionToggle" onClick="8b6de7/clickRemoveCondition">Unconscious</Button>

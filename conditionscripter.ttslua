@@ -172,6 +172,11 @@ conditions = {
     color = Color(161 / 255, 255 / 255, 246 / 255),
     description = "An invisible barrier of magical force appears and protects you. Until the start of your next turn, you have a +5 bonus to AC, including against the triggering attack, and you take no damage from magic missile."
   },
+  silenced = {
+    name = "Silenced",
+    color = Color(178 / 255, 190 / 255, 181 / 255),
+    description = "A silenced creature cannot speak or use any spells or abilities that require verbal components."
+  },
   slowed = {
     name = "Slowed",
     color = Color(53 / 255, 49 / 255, 112 / 255),
