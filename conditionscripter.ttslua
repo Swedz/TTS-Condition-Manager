@@ -386,7 +386,20 @@ function openConditionMenu(player_color, obj)
 	
 	selected_object = obj
 	menu_player = player_color
-	UI.setXml(self.UI.getXml(), {})
+	-- Dynamically create all the buttons for each condition
+	local xml = self.UI.getXml()
+	local xmlInactiveButtons = {}
+	local xmlActiveButtons = {}
+	local condition_index = 1
+	for condition_id, condition in pairs(conditions) do
+		xmlInactiveButtons[condition_index] = "<Button id=\"" .. condition_id .. button_suffix_condition_inactive .. "\" class=\"conditionToggle\" onClick=\"8b6de7/clickAddCondition\">" .. condition["name"] .. "</Button>"
+		xmlActiveButtons[condition_index] = "<Button id=\"" .. condition_id .. button_suffix_condition_active .. "\" class=\"conditionToggle\" onClick=\"8b6de7/clickRemoveCondition\">" .. condition["name"] .. "</Button>"
+		condition_index = condition_index + 1
+	end
+	xml = string.gsub(xml, "{{INACTIVE_BUTTONS}}", table.concat(xmlInactiveButtons))
+	xml = string.gsub(xml, "{{ACTIVE_BUTTONS}}", table.concat(xmlActiveButtons))
+	-- Open the menu
+	UI.setXml(xml, {})
 	local afterLoad = function()
 		UI.setAttribute("ConditionsPanel", "visibility", player_color)
 		
