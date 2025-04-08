@@ -5,6 +5,7 @@ script_guid = self.getGUID()
 button_suffix_condition_active = "_active"
 button_suffix_condition_inactive = "_inactive"
 selected_object = nil
+menu_player = nil
 
 -- Some configuration options, if you are strong enough for it.
 config = {
@@ -377,7 +378,14 @@ end
 
 -- Opens the condition UI for the object.
 function openConditionMenu(player_color, obj)
+	-- If the menu is already opened, prevent the player from opening it
+	if menu_player ~= nil and menu_player ~= player_color and Player[menu_player].seated then
+		Player[player_color].showInfoDialog("The condition menu is already opened by " .. Player[menu_player].steam_name .. ".")
+		return
+	end
+	
 	selected_object = obj
+	menu_player = player_color
 	UI.setXml(self.UI.getXml(), {})
 	
 	-- Calculate how tall the menu should be and where certain things should be offset to.
@@ -422,10 +430,15 @@ end
 function closeConditionMenu(player, value, id)
 	UI.hide("ConditionsPanel")
 	UI.setAttribute("ConditionsPanel", "active", "false")
+	selected_object = nil
+	menu_player = nil
 end
 
 -- Triggered when an inactive condition is clicked in the UI.
 function clickAddCondition(player, _, id)
+	if selected_object == nil then
+		return
+	end
 	local condition_id = string.gsub(id, button_suffix_condition_inactive, "")
 	addCondition(selected_object, condition_id)
 end
@@ -441,6 +454,9 @@ end
 
 -- Triggered when an active condition is clicked in the UI.
 function clickRemoveCondition(player, _, id)
+	if selected_object == nil then
+		return
+	end
 	local condition_id = string.gsub(id, button_suffix_condition_active, "")
 	removeCondition(selected_object, condition_id)
 end
