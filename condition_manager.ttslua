@@ -1,4 +1,4 @@
--- Swedz's D&D 5e Condition Scripter [Version 1.4] for Tabletop Simulator
+-- Swedz's D&D 5e Condition Manager [Version 1.4] for Tabletop Simulator
 
 -- These are core variables for the script to work. If these are edited, things may break. Do not touch these values.
 script_guid = self.getGUID()
