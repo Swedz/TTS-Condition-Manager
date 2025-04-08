@@ -376,17 +376,9 @@ function clickedConditionCounter(obj, player_color, alt_click, condition_id)
 	setupConditionableObject(obj)
 end
 
--- Opens the condition UI for the object.
-function openConditionMenu(player_color, obj)
-	-- If the menu is already opened, prevent the player from opening it
-	if menu_player ~= nil and menu_player ~= player_color and Player[menu_player].seated then
-		Player[player_color].showInfoDialog("The condition menu is already opened by " .. Player[menu_player].steam_name .. ".")
-		return
-	end
-	
-	selected_object = obj
-	menu_player = player_color
-	-- Dynamically create all the buttons for each condition
+-- Builds the UI XML to display
+-- Automatically includes buttons for all conditions in the configuration
+function buildUIXml()
 	local xml = self.UI.getXml()
 	local xmlInactiveButtons = {}
 	local xmlActiveButtons = {}
@@ -398,8 +390,20 @@ function openConditionMenu(player_color, obj)
 	end
 	xml = string.gsub(xml, "{{INACTIVE_BUTTONS}}", table.concat(xmlInactiveButtons))
 	xml = string.gsub(xml, "{{ACTIVE_BUTTONS}}", table.concat(xmlActiveButtons))
-	-- Open the menu
-	UI.setXml(xml, {})
+	return xml
+end
+
+-- Opens the condition UI for the object.
+function openConditionMenu(player_color, obj)
+	-- If the menu is already opened, prevent the player from opening it
+	if menu_player ~= nil and menu_player ~= player_color and Player[menu_player].seated then
+		Player[player_color].showInfoDialog("The condition menu is already opened by " .. Player[menu_player].steam_name .. ".")
+		return
+	end
+	
+	selected_object = obj
+	menu_player = player_color
+	UI.setXml(buildUIXml(), {})
 	local afterLoad = function()
 		UI.setAttribute("ConditionsPanel", "visibility", player_color)
 		
