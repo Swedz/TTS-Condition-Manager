@@ -387,42 +387,49 @@ function openConditionMenu(player_color, obj)
 	selected_object = obj
 	menu_player = player_color
 	UI.setXml(self.UI.getXml(), {})
-	
-	-- Calculate how tall the menu should be and where certain things should be offset to.
-	-- The three 50's are for the text labels. Each one takes up 50 pixels of height.
-	-- We allow 5 conditions per row, so we divide the condition count by 5.
-	-- Each condition button is 25 pixels tall and has 5 pixels of padding on the bottom.
-	-- We have two sections where buttons can be, so we multiply by 2.
-	local dimensions_text_height = 50
-	local dimensions_gridlayout_height = math.ceil(conditions_count / 5) * 30
-	local dimensions_height = (dimensions_text_height * 3) + (dimensions_gridlayout_height * 2)
-	local dimensions_active_title_yoffset = (dimensions_text_height * 2) + dimensions_gridlayout_height
-	local dimensions_active_gridlayout_yoffset = (dimensions_text_height * 3) + dimensions_gridlayout_height
-	UI.setAttribute("ConditionsPanel", "height", dimensions_height)
-	UI.setAttribute("title_active", "offsetXY", "0 -" .. dimensions_active_title_yoffset)
-	UI.setAttribute("gridlayout_active", "offsetXY", "0 -" .. dimensions_active_gridlayout_yoffset)
-	
-	-- Hide and show which buttons depending on what conditions are active.
-	for condition_id, condition in pairs(conditions) do
-		local active_id = condition_id .. button_suffix_condition_active
-		local inactive_id = condition_id .. button_suffix_condition_inactive
-		UI.setAttribute(active_id, "color", "#" .. condition["color"]:toHex(false))
-		UI.setAttribute(inactive_id, "color", "#" .. condition["color"]:toHex(false))
-		if hasCondition(obj, condition_id) then
-			UI.setAttribute(active_id, "active", "true")
-			UI.setAttribute(inactive_id, "active", "false")
-		else
-			UI.setAttribute(active_id, "active", "false")
-			UI.setAttribute(inactive_id, "active", "true")
+	local afterLoad = function()
+		UI.setAttribute("ConditionsPanel", "visibility", player_color)
+		
+		-- Calculate how tall the menu should be and where certain things should be offset to.
+		-- The three 50's are for the text labels. Each one takes up 50 pixels of height.
+		-- We allow 5 conditions per row, so we divide the condition count by 5.
+		-- Each condition button is 25 pixels tall and has 5 pixels of padding on the bottom.
+		-- We have two sections where buttons can be, so we multiply by 2.
+		local dimensions_text_height = 50
+		local dimensions_gridlayout_height = math.ceil(conditions_count / 5) * 30
+		local dimensions_height = (dimensions_text_height * 3) + (dimensions_gridlayout_height * 2)
+		local dimensions_active_title_yoffset = (dimensions_text_height * 2) + dimensions_gridlayout_height
+		local dimensions_active_gridlayout_yoffset = (dimensions_text_height * 3) + dimensions_gridlayout_height
+		UI.setAttribute("ConditionsPanel", "height", dimensions_height)
+		UI.setAttribute("title_active", "offsetXY", "0 -" .. dimensions_active_title_yoffset)
+		UI.setAttribute("gridlayout_active", "offsetXY", "0 -" .. dimensions_active_gridlayout_yoffset)
+		
+		-- Hide and show which buttons depending on what conditions are active.
+		for condition_id, condition in pairs(conditions) do
+			local active_id = condition_id .. button_suffix_condition_active
+			local inactive_id = condition_id .. button_suffix_condition_inactive
+			UI.setAttribute(active_id, "color", "#" .. condition["color"]:toHex(false))
+			UI.setAttribute(inactive_id, "color", "#" .. condition["color"]:toHex(false))
+			if hasCondition(obj, condition_id) then
+				UI.setAttribute(active_id, "active", "true")
+				UI.setAttribute(inactive_id, "active", "false")
+			else
+				UI.setAttribute(active_id, "active", "false")
+				UI.setAttribute(inactive_id, "active", "true")
+			end
 		end
-	end
-	
-	-- Show the menu itself
-	-- We have to wait since TTS is glitchy
-	Wait.frames(function()
+		
+		-- Show the menu itself
 		UI.show("ConditionsPanel")
 		UI.setAttribute("ConditionsPanel", "active", "true")
-	end, 1)
+	end
+	local condition = function()
+		return not UI.loading
+	end
+	local timeout = function()
+		Player[player_color].showInfoDialog("Took too long to load the condition menu. Something may have gone wrong?")
+	end
+	Wait.condition(afterLoad, condition, 10, timeout)
 end
 
 -- Triggered when the X button is pressed in the UI.
