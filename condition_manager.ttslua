@@ -378,13 +378,14 @@ end
 
 -- Build the UI XML for a condition's button
 function buildUIConditionButton(condition_id, condition, active)
+	local color = condition["color"]:toHex(false)
 	local button = "<Button id=\"" .. condition_id
 	if active then
 		button = button .. button_suffix_condition_active .. "\" onClick=\"8b6de7/clickRemoveCondition\""
 	else
 		button = button .. button_suffix_condition_inactive .. "\" onClick=\"8b6de7/clickAddCondition\""
 	end
-	return button .. " class=\"condition_toggle\">" .. condition["name"] .. "</Button>"
+	return button .. " class=\"condition_toggle\" color=\"#" .. color .. "\">" .. condition["name"] .. "</Button>"
 end
 
 -- Builds the UI XML to display
@@ -422,9 +423,6 @@ function openConditionMenu(player_color, obj)
 		for condition_id, condition in pairs(conditions) do
 			local active_id = condition_id .. button_suffix_condition_active
 			local inactive_id = condition_id .. button_suffix_condition_inactive
-			local color = condition["color"]:toHex(false)
-			UI.setAttribute(active_id, "color", "#" .. color)
-			UI.setAttribute(inactive_id, "color", "#" .. color)
 			if hasCondition(obj, condition_id) then
 				UI.setAttribute(active_id, "active", "true")
 				UI.setAttribute(inactive_id, "active", "false")
