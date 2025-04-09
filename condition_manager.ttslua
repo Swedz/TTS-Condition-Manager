@@ -10,7 +10,7 @@ menu_player = nil
 -- Some configuration options, if you are strong enough for it.
 config = {
 	-- Should hovering on conditions display the description?
-	condition_hover_tooltip = false
+	condition_hover_tooltip = true
 }
 
 -- The conditions table
@@ -376,6 +376,17 @@ function clickedConditionCounter(obj, player_color, alt_click, condition_id)
 	setupConditionableObject(obj)
 end
 
+-- Build the UI XML for a condition's button
+function buildUIConditionButton(condition_id, condition, active)
+	local button = "<Button id=\"" .. condition_id
+	if active then
+		button = button .. button_suffix_condition_active .. "\" onClick=\"8b6de7/clickRemoveCondition\""
+	else
+		button = button .. button_suffix_condition_inactive .. "\" onClick=\"8b6de7/clickAddCondition\""
+	end
+	return button .. " class=\"condition_toggle\">" .. condition["name"] .. "</Button>"
+end
+
 -- Builds the UI XML to display
 -- Automatically includes buttons for all conditions in the configuration
 function buildUIXml()
@@ -384,8 +395,8 @@ function buildUIXml()
 	local xmlActiveButtons = {}
 	local condition_index = 1
 	for condition_id, condition in pairs(conditions) do
-		xmlInactiveButtons[condition_index] = "<Button id=\"" .. condition_id .. button_suffix_condition_inactive .. "\" class=\"condition_toggle\" onClick=\"8b6de7/clickAddCondition\">" .. condition["name"] .. "</Button>"
-		xmlActiveButtons[condition_index] = "<Button id=\"" .. condition_id .. button_suffix_condition_active .. "\" class=\"condition_toggle\" onClick=\"8b6de7/clickRemoveCondition\">" .. condition["name"] .. "</Button>"
+		xmlInactiveButtons[condition_index] = buildUIConditionButton(condition_id, condition, false)
+		xmlActiveButtons[condition_index] = buildUIConditionButton(condition_id, condition, true)
 		condition_index = condition_index + 1
 	end
 	xml = string.gsub(xml, "{{INACTIVE_BUTTONS}}", table.concat(xmlInactiveButtons))
