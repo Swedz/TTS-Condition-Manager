@@ -1,31 +1,90 @@
 <!-- Swedz's D&D 5e Condition Manager [Version 1.4] for Tabletop Simulator -->
 
 <Defaults>
-	<Text class="header" rectAlignment="UpperLeft" height="50" fontSize="20" fontStyle="Bold"/>
-	<Button class="closeButton" width="25" height="25" rectAlignment="UpperRight" color="#eeeeee" offsetXY="-3 -3"/>
-	<Button class="conditionToggle" color="White" colors="#C8C8C8|#888888|#888888|#888888" textOutline="#C8C8C8" fontSize="10" fontStyle="Bold"/>
+	<Text
+			class="header"
+			height="50"
+			minHeight="50"
+			preferredHeight="50"
+			flexibleHeight="0"
+			fontSize="20"
+			fontStyle="Bold"/>
+	<Button
+			class="close_button"
+			width="25"
+			height="25"
+			rectAlignment="UpperRight"
+			color="#eeeeee"
+			offsetXY="-3 -3"/>
+	<VerticalLayout
+			class="condition_column"
+			minWidth="200"
+			preferredWidth="200"
+			flexibleWidth="0"
+			minHeight="465"
+			preferredHeight="465"
+			flexibleHeight="0"/>
+	<VerticalScrollView
+			class="condition_list_view"
+			minHeight="445"
+			preferredHeight="445"
+			flexibleHeight="0"
+			contentSizeFitter="vertical"
+			scrollSensitivity="30"
+			horizontalScrollbarVisibility="AutoHideAndExpandViewport"
+			verticalScrollbarVisibility="AutoHideAndExpandViewport"/>
+	<VerticalLayout
+			class="condition_list"
+			spacing="5"
+			childForceExpandHeight="false"
+			contentSizeFitter="vertical"/>
+	<Button
+			class="condition_toggle"
+			width="150"
+			minWidth="150"
+			preferredWidth="150"
+			flexibleWidth="0"
+			height="25"
+			minHeight="25"
+			preferredHeight="25"
+			flexibleHeight="0"
+			color="White"
+			colors="#C8C8C8|#888888|#888888|#888888"
+			textOutline="#C8C8C8"
+			fontSize="10"
+			fontStyle="Bold"/>
 </Defaults>
 
-<Panel id="ConditionsPanel"
+<Panel id="conditions_panel"
 	   active="false"
 	   width="500"
-	   height="510"
+	   height="520"
 	   rectAlignment="MiddleCenter"
 	   returnToOriginalPositionWhenReleased="false"
 	   allowDragging="true"
 	   color="#bbbbbb">
 
-<Text class="header">Conditions</Text>
-<Button id="close" class="closeButton" onClick="8b6de7/closeConditionMenu">X</Button>
+<Text class="header" rectAlignment="UpperCenter">Conditions</Text>
+<Button id="close" class="close_button" onClick="8b6de7/closeConditionMenu">X</Button>
 
-<Text id="title_inactive" class="header" offsetXY="0 -50">Inactive</Text>
-<GridLayout id="gridlayout_inactive" padding="5 5 0 5" spacing="5 5" cellSize="94 25" offsetXY="0 -100">
-	{{INACTIVE_BUTTONS}}
-</GridLayout>
-
-<Text id="title_active" class="header" offsetXY="0 -280">Active</Text>
-<GridLayout id="gridlayout_active" padding="5 5 0 5" spacing="5 5" cellSize="94 25" offsetXY="0 -330">
-	{{ACTIVE_BUTTONS}}
-</GridLayout>
+<HorizontalLayout height="470">
+	<VerticalLayout class="condition_column" rectAlignment="UpperLeft">
+		<Text class="header">Inactive</Text>
+		<VerticalScrollView class="condition_list_view" rectAlignment="UpperLeft">
+			<VerticalLayout class="condition_list">
+				{{INACTIVE_BUTTONS}}
+			</VerticalLayout>
+		</VerticalScrollView>
+	</VerticalLayout>
+	
+	<VerticalLayout class="condition_column" rectAlignment="UpperRight">
+		<Text class="header">Active</Text>
+		<VerticalScrollView class="condition_list_view" rectAlignment="UpperRight">
+			<VerticalLayout class="condition_list">
+				{{ACTIVE_BUTTONS}}
+			</VerticalLayout>
+		</VerticalScrollView>
+	</VerticalLayout>
+</HorizontalLayout>
 
 </Panel>
