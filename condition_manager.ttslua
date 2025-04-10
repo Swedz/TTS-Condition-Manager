@@ -16,189 +16,194 @@ config = {
 	condition_hover_tooltip = true
 }
 
+-- Create a color given the RGB values (0 -> 255)
+function rgb(red, green, blue)
+	return Color(red / 255, green / 255, blue / 255)
+end
+
 -- The conditions table
 -- When adding/removing/editing conditions, the UI script must be edited as well to reflect the changes.
 conditions = {
 	bane = {
 		name = "Bane",
-		color = Color(191 / 255, 103 / 255, 52 / 255),
+		color = rgb(191, 103, 52),
 		description = "While banished, the target is incapacitated. The target remains in the realm the caster picks until the spell ends, at which point the target reappears in the space it left or in the nearest unoccupied space if that space is occupied."
 	},
 	banished = {
 		name = "Banished",
-		color = Color(64 / 255, 64 / 255, 64 / 255),
+		color = rgb(64, 64, 64),
 		description = "While banished, the target is incapacitated. The target remains in the realm the caster picks until the spell ends, at which point the target reappears in the space it left or in the nearest unoccupied space if that space is occupied."
 	},
 	bladesinging = {
 		name = "Bladesinging",
-		color = Color(98 / 255, 184 / 255, 227 / 255),
+		color = rgb(98, 184, 227),
 		description = "You gain a bonus to your AC equal to your Intelligence modifier (minimum of +1).\n\nYour walking speed increases by 10 feet.\n\nYou have advantage on Dexterity (Acrobatics) checks.\n\nYou gain a bonus to any Constitution saving throw you make to maintain your concentration on a spell. The bonus equals your Intelligence modifier (minimum of +1)."
 	},
 	blessed = {
 		name = "Blessed",
-		color = Color(252 / 255, 255 / 255, 176 / 255),
+		color = rgb(252, 255, 176),
 		description = "Whenever the creature makes an attack roll or a saving throw before the spell ends, the creature can roll a d4 and add the number rolled to the attack roll or saving throw."
 	},
 	blinded = {
 		name = "Blinded",
-		color = Color(92 / 255, 92 / 255, 92 / 255),
+		color = rgb(92, 92, 92),
 		description = "A blinded creature can't see and automatically fails any ability check that requires sight.\n\nAttack rolls against the creature have advantage, and the creature's attack rolls have disadvantage."
 	},
 	bloodied = {
 		name = "Bloodied",
-		color = Color(53 / 255, 3 / 255, 3 / 255),
+		color = rgb(53, 3, 3),
 		description = "A bloodied creature is one that has been reduced to less than 50% of its maximum hit points."
 	},
 	blur = {
 		name = "Blur",
-		color = Color(196 / 255, 196 / 255, 196 / 255),
+		color = rgb(196, 196, 196),
 		description = "Your body becomes blurred, shifting and wavering to all who can see you. For the duration, any creature has disadvantage on attack rolls against you. An attacker is immune to this effect if it doesn't rely on sight, as with blindsight, or can see through illusions, as with truesight."
 	},
 	channeldivinity = {
 		name = "Channel Divinity",
-		color = Color(240 / 255, 255 / 255, 253 / 255),
+		color = rgb(240, 255, 253),
 		description = "Some Channel Divinities target a single creature."
 	},
 	charmed = {
 		name = "Charmed",
-		color = Color(255 / 255, 128 / 255, 227 / 255),
+		color = rgb(255, 128, 227),
 		description = "A charmed creature can't attack the charmer or target the charmer with harmful abilities or magical effects.\n\nThe charmer has advantage on any ability check to interact socially with the creature."
 	},
 	concentrating = {
 		name = "Concentrating",
-		color = Color(97 / 255, 94 / 255, 255 / 255),
+		color = rgb(97, 94, 255),
 		description = "Some spells require you to maintain concentration in order to keep their magic active. If you lose concentration, such a spell ends.\n\nTaking damage, the DC is 10 OR half the damage taken. This depends on the higher number of the two."
 	},
 	deafened = {
 		name = "Deafened",
-		color = Color(112 / 255, 52 / 255, 99 / 255),
+		color = rgb(112, 52, 99),
 		description = "A deafened creature can't hear and automatically fails any ability check that requires hearing."
 	},
 	dodging = {
 		name = "Dodging",
-		color = Color(145 / 255, 100 / 255, 100 / 255),
+		color = rgb(145, 100, 100),
 		description = "When you take the Dodge action, you focus entirely on avoiding attacks. Until the start of your next turn, any Attack roll made against you has disadvantage if you can see the attacker, and you make Dexterity Saving Throws with advantage. You lose this benefit if you are Incapacitated (as explained in Conditions ) or if your speed drops to 0."
 	},
 	exhausted = {
 		name = "Exhausted",
-		color = Color(145 / 255, 100 / 255, 100 / 255),
+		color = rgb(145, 100, 100),
 		description = "For every point of exhaustion you have, you get a -1 penalty to all saving throws, ability checks, and attacks. When you reach 10 points of exhaustion, you die.",
 		counter = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
 	},
 	faeriefire = {
 		name = "Faerie Fire",
-		color = Color(254 / 255, 255 / 255, 181 / 255),
+		color = rgb(254, 255, 181),
 		description = "Any creature in the area when the spell is cast is also outlined in light if it fails a Dexterity saving throw. For the duration, objects and affected creatures shed dim light in a 10-foot radius.\n\nAny attack roll against an affected creature or object has advantage if the attacker can see it, and the affected creature or object can’t benefit from being invisible."
 	},
 	frightened = {
 		name = "Frightened",
-		color = Color(201 / 255, 209 / 255, 38 / 255),
+		color = rgb(201, 209, 38),
 		description = "A frightened creature has disadvantage on ability checks and attack rolls while the source of its fear is within line of sight.\n\nThe creature can't willingly move closer to the source of its fear."
 	},
 	grappled = {
 		name = "Grappled",
-		color = Color(38 / 255, 209 / 255, 209 / 255),
+		color = rgb(38, 209, 209),
 		description = "A grappled creature's speed becomes 0, and it can't benefit from any bonus to its speed.\n\nThe condition ends if the grappler is incapacitated (see the condition).\n\nThe condition also ends if an effect removes the grappled creature from the reach of the grappler or grappling effect, such as when a creature is hurled away by the thunderwave spell."
 	},
 	hasted = {
 		name = "Hasted",
-		color = Color(250 / 255, 255 / 255, 99 / 255),
+		color = rgb(250, 255, 99),
 		description = "The creature's speed is doubled, it gains a +2 bonus to AC, it has advantage on Dexterity saving throws, and it gains an additional action on each of its turns. That action can be used only to take the Attack (one weapon attack only), Dash, Disengage, Hide, or Use an Object action.\n\nWhen the spell ends, the creature can't move or take actions until after its next turn, as a wave of lethargy sweeps over it."
 	},
 	heatmetal = {
 		name = "Heat Metal",
-		color = Color(255 / 255, 184 / 255, 51 / 255),
+		color = rgb(255, 184, 51),
 		description = "Choose a manufactured metal object, such as a metal weapon or a suit of heavy or medium metal armor, that you can see within range. You cause the object to glow red-hot. Any creature in physical contact with the object takes 2d8 fire damage when you cast the spell. Until the spell ends, you can use a bonus action on each of your subsequent turns to cause this damage again.\n\nIf a creature is holding or wearing the object and takes the damage from it, the creature must succeed on a Constitution saving throw or drop the object if it can. If it doesn't drop the object, it has disadvantage on attack rolls and ability checks until the start of your next turn.\n\nWhen you cast this spell using a spell slot of 3rd level or higher, the damage increases by 1d8 for each slot level above 2nd."
 	},
 	hexed = {
 		name = "Hexed",
-		color = Color(175 / 255, 94 / 255, 255 / 255),
+		color = rgb(175, 94, 255),
 		description = "The target is cursed. Until the spell ends, you deal an extra 1d6 necrotic damage to the target when attacking. Also, choose one ability, when you cast the spell. The target has disadvantage on ability checks with the chosen ability.\n\nIf the target drops to 0 hit points before this spell ends, you can use a bonus action on a subsequent turn of yours to curse a new creature."
 	},
 	huntersmark = {
 		name = "Hunter's Mark",
-		color = Color(45 / 255, 214 / 255, 73 / 255),
+		color = rgb(45, 214, 73),
 		description = "The target is mystically marked as your quarry. Until the spell ends, you deal an extra 1d6 damage to the target whenever you hit it with a weapon attack, and you have advantage on any Wisdom (Perception) or Wisdom (Survival) checks you make to find it.\n\nIf the target drops to 0 hit points before this spell ends, you can use a bonus action on a subsequent turn of yours to mark a new creature."
 	},
 	incapacitated = {
 		name = "Incapacitated",
-		color = Color(176 / 255, 86 / 255, 30 / 255),
+		color = rgb(176, 86, 30),
 		description = "An incapacitated creature can't take actions or reactions."
 	},
 	invisible = {
 		name = "Invisible",
-		color = Color(255 / 255, 255 / 255, 255 / 255),
+		color = rgb(255, 255, 255),
 		description = "An invisible creature is impossible to see without the aid of magic or a special sense. For the purpose of hiding, the creature is heavily obscured. The creature's location can be detected by any noise it makes or any tracks it leaves.\n\nAttack rolls against the creature have disadvantage, and the creature's attack rolls have advantage."
 	},
 	mirrorimage = {
 		name = "Mirror Image",
-		color = Color(218 / 255, 163 / 255, 255 / 255),
+		color = rgb(218, 163, 255),
 		description = "Three illusory duplicates of yourself appear in your space. Until the spell ends, the duplicates move with you and mimic your actions, shifting position so it's impossible to track which image is real. You can use your action to dismiss the illusory duplicates.\n\nEach time a creature targets you with an attack during the spell's duration, roll a d20 to determine whether the attack instead targets one of your duplicates.\n\nIf you have three duplicates, you must roll a 6 or higher to change the attack's target to a duplicate. With two duplicates, you must roll an 8 or higher. With one duplicate, you must roll an 11 or higher.\n\nA duplicate's AC equals 10 + your Dexterity modifier. If an attack hits a duplicate, the duplicate is destroyed. A duplicate can be destroyed only by an attack that hits it. It ignores all other damage and effects. The spell ends when all three duplicates are destroyed.\n\nA creature is unaffected by this spell if it can't see, if it relies on senses other than sight, such as blindsight, or if it can perceive illusions as false, as with truesight.",
 		counter = { 3, 2, 1 }
 	},
 	paralyzed = {
 		name = "Paralyzed",
-		color = Color(176 / 255, 30 / 255, 174 / 255),
+		color = rgb(176, 30, 174),
 		description = "A paralyzed creature is incapacitated (see the condition) and can't move or speak.\n\nThe creature automatically fails Strength and Dexterity saving throws. Attack rolls against the creature have advantage.\n\nAny attack that hits the creature is a critical hit if the attacker is within 5 feet of the creature."
 	},
 	petrified = {
 		name = "Petrified",
-		color = Color(246 / 255, 255 / 255, 189 / 255),
+		color = rgb(246, 255, 189),
 		description = "A petrified creature is transformed, along with any nonmagical object it is wearing or carrying, into a solid inanimate substance (usually stone). Its weight increases by a factor of ten, and it ceases aging.\n\nThe creature is incapacitated (see the condition), can't move or speak, and is unaware of its surroundings.\n\nAttack rolls against the creature have advantage.\n\nThe creature automatically fails Strength and Dexterity saving throws.\n\nThe creature has resistance to all damage.\n\nThe creature is immune to poison and disease, although a poison or disease already in its system is suspended, not neutralized."
 	},
 	poisoned = {
 		name = "Poisoned",
-		color = Color(11 / 255, 128 / 255, 0 / 255),
+		color = rgb(11, 128, 0),
 		description = "A poisoned creature has disadvantage on attack rolls and ability checks."
 	},
 	prone = {
 		name = "Prone",
-		color = Color(140 / 255, 88 / 255, 136 / 255),
+		color = rgb(140, 88, 136),
 		description = "A prone creature's only movement option is to crawl, unless it stands up and thereby ends the condition.\n\nThe creature has disadvantage on attack rolls.\n\nAn attack roll against the creature has advantage if the attacker is within 5 feet of the creature. Otherwise, the attack roll has disadvantage."
 	},
 	raging = {
 		name = "Raging",
-		color = Color(112 / 255, 17 / 255, 17 / 255),
+		color = rgb(112, 17, 17),
 		description = "You have advantage on Strength check and Strength saves.\n\nWhen you make a melee weapon attack using Strength, you gain a +2 to the damage roll. This bonus increases at 9th and 16th level.\n\nYou have resistance to bludgeoning, piercing, and physical damage."
 	},
 	restrained = {
 		name = "Restrained",
-		color = Color(0 / 255, 121 / 255, 128 / 255),
+		color = rgb(0, 121, 128),
 		description = "A restrained creature's speed becomes 0, and it can't benefit from any bonus to its speed.\n\nAttack rolls against the creature have advantage, and the creature's attack rolls have disadvantage.\n\nThe creature has disadvantage on Dexterity saving throws."
 	},
 	shadowofmoil = {
 		name = "Shadow of Moil",
-		color = Color(88 / 255, 28 / 255, 148 / 255),
+		color = rgb(88, 28, 148),
 		description = "Flame-like shadows wreathe your body until the spell ends, causing you to become heavily obscured to others. The shadows turn dim light within 10 feet of you into darkness, and bright light in the same area to dim light.\n\nUntil the spell ends, you have resistance to radiant damage. In addition, whenever a creature within 10 feet of you hits you with an attack, the shadows lash out at that creature, dealing it 2d8 necrotic damage."
 	},
 	shield = {
 		name = "Shield",
-		color = Color(161 / 255, 255 / 255, 246 / 255),
+		color = rgb(161, 255, 246),
 		description = "An invisible barrier of magical force appears and protects you. Until the start of your next turn, you have a +5 bonus to AC, including against the triggering attack, and you take no damage from magic missile."
 	},
 	silenced = {
 		name = "Silenced",
-		color = Color(178 / 255, 190 / 255, 181 / 255),
+		color = rgb(178, 190, 181),
 		description = "A silenced creature cannot speak or use any spells or abilities that require verbal components."
 	},
 	slowed = {
 		name = "Slowed",
-		color = Color(53 / 255, 49 / 255, 112 / 255),
+		color = rgb(53, 49, 112),
 		description = "You alter time around up to six creatures of your choice in a 40-foot cube within range. Each target must succeed on a Wisdom saving throw or be affected by this spell for the duration.\n\nAn affected target's speed is halved, it takes a −2 penalty to AC and Dexterity saving throws, and it can't use reactions. On its turn, it can use either an action or a bonus action, not both. Regardless of the creature's abilities or magic items, it can't make more than one melee or ranged attack during its turn.\n\nIf the creature attempts to cast a spell with a casting time of 1 action, roll a d20. On an 11 or higher, the spell doesn't take effect until the creature's next turn, and the creature must use its action on that turn to complete the spell. If it can't, the spell is wasted.\n\nA creature affected by this spell makes another Wisdom saving throw at the end of each of its turns. On a successful save, the effect ends for it."
 	},
 	stunned = {
 		name = "Stunned",
-		color = Color(181 / 255, 251 / 255, 255 / 255),
+		color = rgb(181, 251, 255),
 		description = "A stunned creature is incapacitated (see the condition), can't move, and can speak only falteringly.\n\nThe creature automatically fails Strength and Dexterity saving throws.\n\nAttack rolls against the creature have advantage."
 	},
 	unconscious = {
 		name = "Unconscious",
-		color = Color(255 / 255, 0 / 255, 0 / 255),
+		color = rgb(255, 0, 0),
 		description = "An unconscious creature is incapacitated, can't move or speak, and is unaware of its surroundings.\n\nThe creature drops whatever it's holding and falls prone.\n\nThe creature automatically fails Strength and Dexterity saving throws.\n\nAttack rolls against the creature have advantage.\n\nAny attack that hits the creature is a critical hit if the attacker is within 5 feet of the creature."
 	},
 	wounded = {
 		name = "Wounded",
-		color = Color(207 / 255, 51 / 255, 41 / 255),
+		color = rgb(207, 51, 41),
 		description = "You have been seriously injured. What this means varies from effect to effect, so I will not be writing a description. So sorry.",
 		counter = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
 	}
