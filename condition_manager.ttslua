@@ -526,52 +526,6 @@ function clearConditions(obj)
 	setupConditionableObject(obj)
 end
 
--- Events
-
--- Track when new figurines are spawned in. Automatically set them up to be conditionable.
-function onObjectSpawn(obj)
-	if isFigurine(obj) then
-		setupConditionableObject(obj)
-	end
-end
-
--- Utility methods
-
--- Get the number of elements in the table
-function sizeOf(table)
-	local count = 0
-	for k, v in pairs(table) do
-		count = count + 1
-	end
-	return count
-end
-
--- Get the index of an element in the table
-function indexOf(table, element)
-	for index, e in ipairs(table) do
-		if e == element then
-			return index
-		end
-	end
-end
-
--- Flip the values in the table given the two indexes
-function flip(table, index_a, index_b)
-	local value_a = table[index_a]
-	table[index_a] = table[index_b]
-	table[index_b] = value_a
-end
-
--- Check if the object is a figurine
-function isFigurine(obj)
-	return obj.type == "Figurine"
-end
-
--- Check if the object is a hero forge model
-function isHeroForgeModel(obj)
-	return obj.AssetBundle ~= nil
-end
-
 -- Modify the condition state for an object
 function setCondition(obj, condition_id, active)
 	local object_data = default(object_conditions[obj.getGUID()], {})
@@ -616,6 +570,42 @@ function setConditionMetadata(obj, condition_id, metadata)
 	object_condition_metadata[obj.getGUID()] = object_data
 end
 
+-- Events
+
+-- Track when new figurines are spawned in. Automatically set them up to be conditionable.
+function onObjectSpawn(obj)
+	if isFigurine(obj) then
+		setupConditionableObject(obj)
+	end
+end
+
+-- Utility methods
+
+-- Get the number of elements in the table
+function sizeOf(table)
+	local count = 0
+	for k, v in pairs(table) do
+		count = count + 1
+	end
+	return count
+end
+
+-- Get the index of an element in the table
+function indexOf(table, element)
+	for index, e in ipairs(table) do
+		if e == element then
+			return index
+		end
+	end
+end
+
+-- Flip the values in the table given the two indexes
+function flip(table, index_a, index_b)
+	local value_a = table[index_a]
+	table[index_a] = table[index_b]
+	table[index_b] = value_a
+end
+
 -- Return either the value or the default_value. If the value is nil, the default_value is returned.
 function default(value, default_value)
 	if value == nil then
@@ -623,4 +613,14 @@ function default(value, default_value)
 	else
 		return value
 	end
+end
+
+-- Check if the object is a figurine
+function isFigurine(obj)
+	return obj.type == "Figurine"
+end
+
+-- Check if the object is a hero forge model
+function isHeroForgeModel(obj)
+	return obj.AssetBundle ~= nil
 end
