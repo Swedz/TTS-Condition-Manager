@@ -21,8 +21,7 @@ function rgb(red, green, blue)
 	return Color(red / 255, green / 255, blue / 255)
 end
 
--- The conditions table
--- When adding/removing/editing conditions, the UI script must be edited as well to reflect the changes.
+-- The conditions table, you can edit this as needed
 conditions = {
 	bane = {
 		name = "Bane",
