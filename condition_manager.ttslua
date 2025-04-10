@@ -426,16 +426,16 @@ end
 -- Automatically includes buttons for all conditions in the configuration
 function buildUIXml()
 	local xml = self.UI.getXml()
-	local xmlInactiveButtons = {}
-	local xmlActiveButtons = {}
+	local xml_inactive_buttons = {}
+	local xml_active_buttons = {}
 	local condition_index = 1
 	for condition_id, condition in pairs(conditions) do
-		xmlInactiveButtons[condition_index] = buildUIConditionButton(condition_id, condition, false)
-		xmlActiveButtons[condition_index] = buildUIConditionButton(condition_id, condition, true)
+		xml_inactive_buttons[condition_index] = buildUIConditionButton(condition_id, condition, false)
+		xml_active_buttons[condition_index] = buildUIConditionButton(condition_id, condition, true)
 		condition_index = condition_index + 1
 	end
-	xml = string.gsub(xml, "{{INACTIVE_BUTTONS}}", table.concat(xmlInactiveButtons))
-	xml = string.gsub(xml, "{{ACTIVE_BUTTONS}}", table.concat(xmlActiveButtons))
+	xml = string.gsub(xml, "{{INACTIVE_BUTTONS}}", table.concat(xml_inactive_buttons))
+	xml = string.gsub(xml, "{{ACTIVE_BUTTONS}}", table.concat(xml_active_buttons))
 	return xml
 end
 
@@ -450,7 +450,7 @@ function openConditionMenu(player_color, obj)
 	selected_object = obj
 	menu_player = player_color
 	UI.setXml(buildUIXml(), {})
-	local afterLoad = function()
+	local function afterLoad()
 		UI.setAttribute("conditions_panel", "visibility", player_color)
 		
 		-- Hide and show which buttons depending on what conditions are active.
@@ -470,10 +470,10 @@ function openConditionMenu(player_color, obj)
 		UI.show("conditions_panel")
 		UI.setAttribute("conditions_panel", "active", "true")
 	end
-	local condition = function()
+	local function condition()
 		return not UI.loading
 	end
-	local timeout = function()
+	local function timeout()
 		Player[player_color].showInfoDialog("Took too long to load the condition menu. Something may have gone wrong?")
 	end
 	Wait.condition(afterLoad, condition, 10, timeout)
