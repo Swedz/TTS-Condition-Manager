@@ -277,13 +277,14 @@ end
 -- Creates the condition display for the specified condition at the index on the object.
 -- The "condition display" is the button that appears above figurines when they have conditions.
 function createConditionDisplay(obj, condition_id, index)
+	local is_heroforge_model = isHeroForgeModel(obj)
 	local condition = conditions[condition_id]
 	
 	local y_pos = 2.2 + ((index - 1) * 0.3) -- Should probably use relative height of the object instead of 2.2, but it seems to work for most models.
 	
 	-- The rotations for hero forge models are different from the generic models the tabletop model mod.
 	local condition_rotation = { 270, 0, 0 }
-	if isHeroForgeModel(obj) then
+	if is_heroforge_model then
 		condition_rotation = { 0, 90, 270 }
 	end
 	
@@ -317,6 +318,10 @@ function createConditionDisplay(obj, condition_id, index)
 		local condition_name_button_width = condition_button_width - condition_counter_button_width
 		local condition_name_button_position = { ((condition_button_width / 2) - condition_counter_button_width - (condition_name_button_width / 2)) * magic_multiplier, y_pos, 0 }
 		local condition_counter_button_position = { ((condition_button_width / 2) - (condition_counter_button_width / 2)) * magic_multiplier, y_pos, 0 }
+		if is_heroforge_model then
+			flip(condition_name_button_position, 1, 3)
+			flip(condition_counter_button_position, 1, 3)
+		end
 		
 		obj.createButton({
 			click_function = "clickedConditionDisplay",
@@ -548,6 +553,13 @@ function indexOf(table, element)
 			return index
 		end
 	end
+end
+
+-- Flip the values in the table given the two indexes
+function flip(table, index_a, index_b)
+	local value_a = table[index_a]
+	table[index_a] = table[index_b]
+	table[index_b] = value_a
 end
 
 -- Check if the object is a figurine
