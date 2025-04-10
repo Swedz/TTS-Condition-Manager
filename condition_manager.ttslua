@@ -4,6 +4,9 @@
 script_guid = self.getGUID()
 button_suffix_condition_active = "_active"
 button_suffix_condition_inactive = "_inactive"
+conditions_count = 0
+condition_button_width = 1500
+condition_counter_button_width = 250
 selected_object = nil
 menu_player = nil
 
@@ -200,7 +203,6 @@ conditions = {
 		counter = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
 	}
 }
-conditions_count = 0
 
 -- Data used for keeping track of conditions and their metadata
 object_conditions = {}
@@ -210,6 +212,16 @@ object_condition_metadata = {}
 function onLoad(script_state)
 	-- Count how many conditions we have loaded, so we can use it later
 	conditions_count = sizeOf(conditions)
+	-- Determine the width condition buttons should be
+	condition_button_width = 1500
+	for condition_id, condition in pairs(conditions) do
+		local condition_name = condition["name"]
+		local condition_name_width = string.len(condition_name) * 100
+		if condition_name_width > condition_button_width then
+			condition_button_width = condition_name_width
+		end
+	end
+	condition_button_width = math.ceil(condition_button_width / 500) * 500
 	
 	-- Load in our saved data
 	local state = default(JSON.decode(script_state), {})
@@ -293,25 +305,31 @@ function createConditionDisplay(obj, condition_id, index)
 			hover_color = condition["color"],
 			press_color = condition["color"],
 			font_color = { 1, 1, 1 },
-			width = 1500,
+			width = condition_button_width,
 			height = 250,
 			font_size = 200,
 			tooltip = condition_tooltip,
 			alignment = 3
 		})
 	else
+		-- I do not have a justification for this magic multiplier. Do not ask me.
+		local magic_multiplier = 0.00104
+		local condition_name_button_width = condition_button_width - condition_counter_button_width
+		local condition_name_button_position = { ((condition_button_width / 2) - condition_counter_button_width - (condition_name_button_width / 2)) * magic_multiplier, y_pos, 0 }
+		local condition_counter_button_position = { ((condition_button_width / 2) - (condition_counter_button_width / 2)) * magic_multiplier, y_pos, 0 }
+		
 		obj.createButton({
 			click_function = "clickedConditionDisplay",
 			function_owner = self,
 			label = condition["name"],
-			position = { 0, y_pos, -0.13 },
+			position = condition_name_button_position,
 			rotation = condition_rotation,
 			scale = { 0.5, 0.5, 0.5 },
 			color = condition["color"],
 			hover_color = condition["color"],
 			press_color = condition["color"],
 			font_color = { 1, 1, 1 },
-			width = 1250,
+			width = condition_name_button_width,
 			height = 250,
 			font_size = 200,
 			tooltip = condition_tooltip
@@ -327,14 +345,14 @@ function createConditionDisplay(obj, condition_id, index)
 			click_function = counter_function_name,
 			function_owner = self,
 			label = counter,
-			position = { 0, y_pos, 0.65 },
+			position = condition_counter_button_position,
 			rotation = condition_rotation,
 			scale = { 0.5, 0.5, 0.5 },
 			color = condition["color"],
 			hover_color = condition["color"],
 			press_color = condition["color"],
 			font_color = { 1, 1, 1 },
-			width = 250,
+			width = condition_counter_button_width,
 			height = 250,
 			font_size = 200
 		})
