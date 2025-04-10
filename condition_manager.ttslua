@@ -227,12 +227,12 @@ function onLoad(script_state)
 	condition_button_width = 1500
 	for condition_id, condition in pairs(conditions) do
 		local condition_name = condition["name"]
-		local condition_name_width = string.len(condition_name) * 100
+		local condition_name_width = string.len(condition_name) * 135
 		if condition_name_width > condition_button_width then
 			condition_button_width = condition_name_width
 		end
 	end
-	condition_button_width = math.ceil(condition_button_width / 500) * 500
+	condition_button_width = math.ceil(condition_button_width / 100) * 100
 	
 	-- Load in our saved data
 	local state = default(JSON.decode(script_state), {})
