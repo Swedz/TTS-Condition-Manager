@@ -135,6 +135,12 @@ conditions = {
 		color = rgb(255, 255, 255),
 		description = "An invisible creature is impossible to see without the aid of magic or a special sense. For the purpose of hiding, the creature is heavily obscured. The creature's location can be detected by any noise it makes or any tracks it leaves.\n\nAttack rolls against the creature have disadvantage, and the creature's attack rolls have advantage."
 	},
+	legendaryaction = {
+		name = "Legendary Action",
+		color = rgb(255, 215, 0),
+		description = "The number of Legendary Actions this creature has remaining this round. Legendary Actions can only be used at the end of another creature's turn, and only one legendary action can be used at a time.",
+		counter = { 4, 3, 2, 1, 0 }
+	},
 	mirrorimage = {
 		name = "Mirror Image",
 		color = rgb(218, 163, 255),
