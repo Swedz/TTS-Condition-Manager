@@ -414,9 +414,9 @@ function buildUIConditionButton(condition_id, condition, active)
 	local color = condition["color"]:toHex(false)
 	local button = "<Button id=\"" .. condition_id
 	if active then
-		button = button .. button_suffix_condition_active .. "\" onClick=\"8b6de7/clickRemoveCondition\""
+		button = button .. button_suffix_condition_active .. "\" onClick=\"" .. script_guid .. "/clickRemoveCondition\""
 	else
-		button = button .. button_suffix_condition_inactive .. "\" onClick=\"8b6de7/clickAddCondition\""
+		button = button .. button_suffix_condition_inactive .. "\" onClick=\"" .. script_guid .. "/clickAddCondition\""
 	end
 	return button .. " class=\"condition_toggle\" color=\"#" .. color .. "\">" .. condition["name"] .. "</Button>"
 end
@@ -450,6 +450,7 @@ function openConditionMenu(player_color, obj)
 	menu_player = player_color
 	UI.setXml(buildUIXml(), {})
 	local function afterLoad()
+		UI.setAttribute("close", "onClick", script_guid .. "/closeConditionMenu")
 		UI.setAttribute("conditions_panel", "visibility", player_color)
 		
 		-- Hide and show which buttons depending on what conditions are active.

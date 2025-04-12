@@ -65,7 +65,7 @@
 	   color="#bbbbbb">
 
 <Text class="header" rectAlignment="UpperCenter">Conditions</Text>
-<Button id="close" class="close_button" onClick="8b6de7/closeConditionMenu">X</Button>
+<Button id="close" class="close_button">X</Button>
 
 <HorizontalLayout height="470">
 	<VerticalLayout class="condition_column" rectAlignment="UpperLeft">
