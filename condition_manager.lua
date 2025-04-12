@@ -169,7 +169,7 @@ conditions = {
 	raging = {
 		name = "Raging",
 		color = rgb(112, 17, 17),
-		description = "You have advantage on Strength check and Strength saves.\n\nWhen you make a melee weapon attack using Strength, you gain a +2 to the damage roll. This bonus increases at 9th and 16th level.\n\nYou have resistance to bludgeoning, piercing, and physical damage."
+		description = "You have advantage on Strength check and Strength saves.\n\nWhen you make a melee weapon attack using Strength, you gain a +2 to the damage roll. This bonus increases at 9th and 16th level.\n\nYou have resistance to bludgeoning, piercing, and slashing damage."
 	},
 	restrained = {
 		name = "Restrained",
