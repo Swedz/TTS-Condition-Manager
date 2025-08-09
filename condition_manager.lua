@@ -1,4 +1,4 @@
--- Swedz's D&D 5e Condition Manager [Version 1.4] for Tabletop Simulator
+-- Swedz's D&D 5e Condition Manager [Version 1.5] for Tabletop Simulator
 
 -- These are core variables for the script to work. If these are edited, things may break. Do not touch these values.
 script_guid = self.getGUID()
@@ -23,6 +23,11 @@ end
 
 -- The conditions table, you can edit this as needed
 conditions = {
+	addled = {
+		name = "Addled",
+		color = rgb(80, 131, 250),
+		description = "You have disadvantage on Intelligence, Wisdom, and Charisma attacks rolls, ability checks, and saving throws."
+	},
 	bane = {
 		name = "Bane",
 		color = rgb(191, 103, 52),
@@ -33,10 +38,20 @@ conditions = {
 		color = rgb(64, 64, 64),
 		description = "While banished, the target is incapacitated. The target remains in the realm the caster picks until the spell ends, at which point the target reappears in the space it left or in the nearest unoccupied space if that space is occupied."
 	},
+	bewildered = {
+		name = "Bewildered",
+		color = rgb(188, 80, 250),
+		description = "You can’t cast spells, except for cantrips with a casting time of 1 action."
+	},
 	bladesinging = {
 		name = "Bladesinging",
 		color = rgb(98, 184, 227),
 		description = "You gain a bonus to your AC equal to your Intelligence modifier (minimum of +1).\n\nYour walking speed increases by 10 feet.\n\nYou have advantage on Dexterity (Acrobatics) checks.\n\nYou gain a bonus to any Constitution saving throw you make to maintain your concentration on a spell. The bonus equals your Intelligence modifier (minimum of +1)."
+	},
+	bleeding = {
+		name = "Bleeding",
+		color = rgb(92, 3, 3),
+		description = "You’re losing blood to an open wound.\n\nOngoing Damage. At the end of each of your turns, you lose Hit Points. The number of Hit Points lost is indicated by the condition, such as \"Bleeding 2d4.\"\n\nRegaining Hit Points. The condition ends if you regain any Hit Points.\n\nMedical Treatment. You or another creature within 5 feet of you can spend an action and use a healer's kit to staunch the bleeding (no check required), ending the condition."
 	},
 	blessed = {
 		name = "Blessed",
@@ -58,6 +73,11 @@ conditions = {
 		color = rgb(196, 196, 196),
 		description = "Your body becomes blurred, shifting and wavering to all who can see you. For the duration, any creature has disadvantage on attack rolls against you. An attacker is immune to this effect if it doesn't rely on sight, as with blindsight, or can see through illusions, as with truesight."
 	},
+	burning = {
+		name = "Burning",
+		color = rgb(255, 122, 51),
+		description = "You’re on fire or covered in acid:\n\nOngoing Damage. At the end of each of your turns, you take damage. The damage type and amount are indicated by the condition, such as \"Burning (4d6 Fire)\" or \"Burning (2d4 Acid).\"\n\nEnding the Condition. The condition ends if you or another creature within 5 feet of you can spend an action to extinguish the flames or scrape off the acid, or if some other effect douses the flames (such as being submerged in water)."
+	},
 	channeldivinity = {
 		name = "Channel Divinity",
 		color = rgb(240, 255, 253),
@@ -68,20 +88,56 @@ conditions = {
 		color = rgb(255, 128, 227),
 		description = "A charmed creature can't attack the charmer or target the charmer with harmful abilities or magical effects.\n\nThe charmer has advantage on any ability check to interact socially with the creature."
 	},
+	clumsy = {
+		name = "Clumsy",
+		color = rgb(51, 255, 143),
+		description = "You have disadvantage on Dexterity attack rolls, ability checks, and saving throws."
+	},
 	concentrating = {
 		name = "Concentrating",
 		color = rgb(97, 94, 255),
 		description = "Some spells require you to maintain concentration in order to keep their magic active. If you lose concentration, such a spell ends.\n\nTaking damage, the DC is 10 OR half the damage taken. This depends on the higher number of the two."
+	},
+	contamination = {
+		name = "Contamination",
+		color = rgb(95, 51, 255),
+		description = "A Contaminated creature suffers the symptoms from its current level as well as all lower levels. Conditions gained from Contamination end when those Contamination levels end. There is no other way to remove conditions caused by symptoms of Contamination.\n\nEach time you gain a Contamination level, roll 1d6. If the result is equal to or lower than your current Contamination level, you gain a randomly determined mutation by rolling on the Mutations Table. The effects of the mutation remain while you have Contamination levels. Unless otherwise specified, a creature can’t gain the same mutation more than once. If a duplicate result is rolled, the GM chooses a different one or rolls again.\n\n1. None\n\n2. Halve the Hit Points you regain when you expend Hit Dice during a Short Rest.\n\n3. You do not regain Hit Points when you finish a Long Rest.\n\n4. You deal half damage with weapon attacks and spells.\n\n5. You can move or take an action on your turn, not both. You can't take Bonus Actions.\n\n6. You have a monstrous transformation!",
+		counter = { 1, 2, 3, 4, 5, 6 }
+	},
+	cursed = {
+		name = "Cursed",
+		color = rgb(255, 110, 144),
+		description = "The target is cursed. The effects of the curse vary depending on the curse."
+	},
+	dazed = {
+		name = "Dazed",
+		color = rgb(133, 48, 9),
+		description = "You can move or take an action on your turn, not both. You can't take Bonus Actions."
 	},
 	deafened = {
 		name = "Deafened",
 		color = rgb(112, 52, 99),
 		description = "A deafened creature can't hear and automatically fails any ability check that requires hearing."
 	},
+	defenseless = {
+		name = "Defenseless",
+		color = rgb(128, 32, 45),
+		description = "Attack rolls against you have Advantage."
+	},
+	distracted = {
+		name = "Distracted",
+		color = rgb(237, 240, 93),
+		description = "You can't take Reactions."
+	},
 	dodging = {
 		name = "Dodging",
 		color = rgb(145, 100, 100),
 		description = "When you take the Dodge action, you focus entirely on avoiding attacks. Until the start of your next turn, any Attack roll made against you has disadvantage if you can see the attacker, and you make Dexterity Saving Throws with advantage. You lose this benefit if you are Incapacitated (as explained in Conditions ) or if your speed drops to 0."
+	},
+	enfeebled = {
+		name = "Enfeebled",
+		color = rgb(97, 153, 89),
+		description = "You have Disadvantage on Strength attack rolls, ability checks, and saving throws."
 	},
 	exhausted = {
 		name = "Exhausted",
@@ -99,10 +155,15 @@ conditions = {
 		color = rgb(201, 209, 38),
 		description = "A frightened creature has disadvantage on ability checks and attack rolls while the source of its fear is within line of sight.\n\nThe creature can't willingly move closer to the source of its fear."
 	},
+	frozen = {
+		name = "Frozen",
+		color = rgb(129, 252, 248),
+		description = "You're partially encased in ice:\n\nYour Speed becomes 0, and you can't benefit from any bonuses to your Speed. If you're flying when you become Frozen, you fall.\n\nAttack rolls against you have Advantage.\n\nAttacks made with a weapon that deals Bludgeoning damage automatically crit against you.\n\nYou or another creature take an action to break the ice away. To do so, you must succeed on a Strength (Athletics) check. On a successful check, the condition ends. The DC is indicated by the condition, such as Frozen (DC 15).\n\nThis condition ends on you if you take 20 Bludgeoning or Fire damage."
+	},
 	grappled = {
 		name = "Grappled",
 		color = rgb(38, 209, 209),
-		description = "A grappled creature's speed becomes 0, and it can't benefit from any bonus to its speed.\n\nThe condition ends if the grappler is incapacitated (see the condition).\n\nThe condition also ends if an effect removes the grappled creature from the reach of the grappler or grappling effect, such as when a creature is hurled away by the thunderwave spell."
+		description = "A grappled creature's speed becomes 0, and it can't benefit from any bonus to its speed.\n\nThe condition ends if the grappler is incapacitated (can't take actions or reactions).\n\nThe condition also ends if an effect removes the grappled creature from the reach of the grappler or grappling effect, such as when a creature is hurled away by the thunderwave spell."
 	},
 	hasted = {
 		name = "Hasted",
@@ -114,6 +175,11 @@ conditions = {
 		color = rgb(255, 184, 51),
 		description = "Choose a manufactured metal object, such as a metal weapon or a suit of heavy or medium metal armor, that you can see within range. You cause the object to glow red-hot. Any creature in physical contact with the object takes 2d8 fire damage when you cast the spell. Until the spell ends, you can use a bonus action on each of your subsequent turns to cause this damage again.\n\nIf a creature is holding or wearing the object and takes the damage from it, the creature must succeed on a Constitution saving throw or drop the object if it can. If it doesn't drop the object, it has disadvantage on attack rolls and ability checks until the start of your next turn.\n\nWhen you cast this spell using a spell slot of 3rd level or higher, the damage increases by 1d8 for each slot level above 2nd."
 	},
+	helpless = {
+		name = "Helpless",
+		color = rgb(222, 13, 58),
+		description = "Any attack that hits you is a Critical Hit."
+	},
 	hexed = {
 		name = "Hexed",
 		color = rgb(175, 94, 255),
@@ -123,6 +189,11 @@ conditions = {
 		name = "Hunter's Mark",
 		color = rgb(45, 214, 73),
 		description = "The target is mystically marked as your quarry. Until the spell ends, you deal an extra 1d6 damage to the target whenever you hit it with a weapon attack, and you have advantage on any Wisdom (Perception) or Wisdom (Survival) checks you make to find it.\n\nIf the target drops to 0 hit points before this spell ends, you can use a bonus action on a subsequent turn of yours to mark a new creature."
+	},
+	immobalized = {
+		name = "Immobalized",
+		color = rgb(176, 86, 30),
+		description = "Your Speed becomes 0, and you can't benefit from any bonuses to your Speed.\n\nIf you're flying when you become Immobilized, you fall."
 	},
 	incapacitated = {
 		name = "Incapacitated",
@@ -134,11 +205,21 @@ conditions = {
 		color = rgb(255, 255, 255),
 		description = "An invisible creature is impossible to see without the aid of magic or a special sense. For the purpose of hiding, the creature is heavily obscured. The creature's location can be detected by any noise it makes or any tracks it leaves.\n\nAttack rolls against the creature have disadvantage, and the creature's attack rolls have advantage."
 	},
+	jinxed = {
+		name = "Jinxed",
+		color = rgb(250, 135, 233),
+		description = "Roll the die indicated by the condition, such as \"Jinxed 1d4\" each time you make an attack roll or saving throw. Subtract the value on the die from the result."
+	},
 	legendaryaction = {
 		name = "Legendary Action",
 		color = rgb(255, 215, 0),
 		description = "The number of Legendary Actions this creature has remaining this round. Legendary Actions can only be used at the end of another creature's turn, and only one legendary action can be used at a time.",
 		counter = { 4, 3, 2, 1, 0 }
+	},
+	madness = {
+		name = "Madness",
+		color = rgb(125, 10, 240),
+		description = "You are subjected to madness. What that means for you depends on the type of madness.",
 	},
 	mirrorimage = {
 		name = "Mirror Image",
@@ -149,12 +230,12 @@ conditions = {
 	paralyzed = {
 		name = "Paralyzed",
 		color = rgb(176, 30, 174),
-		description = "A paralyzed creature is incapacitated (see the condition) and can't move or speak.\n\nThe creature automatically fails Strength and Dexterity saving throws. Attack rolls against the creature have advantage.\n\nAny attack that hits the creature is a critical hit if the attacker is within 5 feet of the creature."
+		description = "A paralyzed creature is incapacitated (can't take actions or reactions), move or speak.\n\nThe creature automatically fails Strength and Dexterity saving throws. Attack rolls against the creature have advantage.\n\nAny attack that hits the creature is a critical hit if the attacker is within 5 feet of the creature."
 	},
 	petrified = {
 		name = "Petrified",
 		color = rgb(246, 255, 189),
-		description = "A petrified creature is transformed, along with any nonmagical object it is wearing or carrying, into a solid inanimate substance (usually stone). Its weight increases by a factor of ten, and it ceases aging.\n\nThe creature is incapacitated (see the condition), can't move or speak, and is unaware of its surroundings.\n\nAttack rolls against the creature have advantage.\n\nThe creature automatically fails Strength and Dexterity saving throws.\n\nThe creature has resistance to all damage.\n\nThe creature is immune to poison and disease, although a poison or disease already in its system is suspended, not neutralized."
+		description = "A petrified creature is transformed, along with any nonmagical object it is wearing or carrying, into a solid inanimate substance (usually stone). Its weight increases by a factor of ten, and it ceases aging.\n\nThe creature is incapacitated (can't take actions or reactions), can't move or speak, and is unaware of its surroundings.\n\nAttack rolls against the creature have advantage.\n\nThe creature automatically fails Strength and Dexterity saving throws.\n\nThe creature has resistance to all damage.\n\nThe creature is immune to poison and disease, although a poison or disease already in its system is suspended, not neutralized."
 	},
 	poisoned = {
 		name = "Poisoned",
@@ -186,6 +267,21 @@ conditions = {
 		color = rgb(161, 255, 246),
 		description = "An invisible barrier of magical force appears and protects you. Until the start of your next turn, you have a +5 bonus to AC, including against the triggering attack, and you take no damage from magic missile."
 	},
+	shieldoffaith = {
+		name = "Shield of Faith",
+		color = rgb(110, 255, 240),
+		description = "A shimmering field surrounds you, granting a +2 bonus to AC for the duration."
+	},
+	shocked = {
+		name = "Shocked",
+		color = rgb(157, 242, 225),
+		description = "You can move or take an action on your turn, not both. You can't take Bonus Actions.\n\nAttack rolls against you have advantage.\n\nYou drop whatever you're holding in your hands.\n\nYou must spend an action to draw, stow, or pick up an object."
+	},
+	sickened = {
+		name = "Sickened",
+		color = rgb(64, 122, 58),
+		description = "You have disadvantage on Constitution saving throws."
+	},
 	silenced = {
 		name = "Silenced",
 		color = rgb(178, 190, 181),
@@ -194,22 +290,37 @@ conditions = {
 	slowed = {
 		name = "Slowed",
 		color = rgb(53, 49, 112),
-		description = "You alter time around up to six creatures of your choice in a 40-foot cube within range. Each target must succeed on a Wisdom saving throw or be affected by this spell for the duration.\n\nAn affected target's speed is halved, it takes a −2 penalty to AC and Dexterity saving throws, and it can't use reactions. On its turn, it can use either an action or a bonus action, not both. Regardless of the creature's abilities or magic items, it can't make more than one melee or ranged attack during its turn.\n\nIf the creature attempts to cast a spell with a casting time of 1 action, roll a d20. On an 11 or higher, the spell doesn't take effect until the creature's next turn, and the creature must use its action on that turn to complete the spell. If it can't, the spell is wasted.\n\nA creature affected by this spell makes another Wisdom saving throw at the end of each of its turns. On a successful save, the effect ends for it."
+		description = "Your Speed is halved."
+	},
+	staggered = {
+		name = "Staggered",
+		color = rgb(58, 116, 122),
+		description = "You can't make more than one weapon attack during your turn, regardless of your class features, spells, or magic items."
 	},
 	stunned = {
 		name = "Stunned",
 		color = rgb(181, 251, 255),
-		description = "A stunned creature is incapacitated (see the condition), can't move, and can speak only falteringly.\n\nThe creature automatically fails Strength and Dexterity saving throws.\n\nAttack rolls against the creature have advantage."
+		description = "A stunned creature is incapacitated (can't take actions or reactions), can't move, and can speak only falteringly.\n\nThe creature automatically fails Strength and Dexterity saving throws.\n\nAttack rolls against the creature have advantage."
 	},
 	unconscious = {
 		name = "Unconscious",
 		color = rgb(255, 0, 0),
 		description = "An unconscious creature is incapacitated, can't move or speak, and is unaware of its surroundings.\n\nThe creature drops whatever it's holding and falls prone.\n\nThe creature automatically fails Strength and Dexterity saving throws.\n\nAttack rolls against the creature have advantage.\n\nAny attack that hits the creature is a critical hit if the attacker is within 5 feet of the creature."
 	},
+	valor = {
+		name = "Valor",
+		color = rgb(212, 35, 35),
+		description = "Add a die to your attack rolls and saving throws. The die rolled is specified by the condition, such as Valor (1d4)."
+	},
+	weakened = {
+		name = "Weakened",
+		color = rgb(150, 50, 55),
+		description = "You deal half damage with weapon attacks and spells."
+	},
 	wounded = {
 		name = "Wounded",
 		color = rgb(207, 51, 41),
-		description = "You have been seriously injured. What this means varies from effect to effect, so I will not be writing a description. So sorry.",
+		description = "You have been seriously injured. What this means varies from effect to effect.",
 		counter = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
 	}
 }
