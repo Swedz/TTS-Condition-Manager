@@ -1,4 +1,4 @@
--- Swedz's D&D 5e Condition Manager [Version 1.5] for Tabletop Simulator
+-- Swedz's D&D 5e Condition Manager [Version 1.6] for Tabletop Simulator
 
 -- These are core variables for the script to work. If these are edited, things may break. Do not touch these values.
 script_guid = self.getGUID()
@@ -382,6 +382,9 @@ function setupConditionableObject(obj)
 	obj.addContextMenuItem("Conditions", function(player_color)
 		openConditionMenu(player_color, obj)
 	end, false)
+	obj.addContextMenuItem("Toggle Bloodied", function(player_color)
+        toggleBloodied(obj)
+    end, false)
 	obj.addContextMenuItem("Clear Conditions", function(player_color)
 		clearConditions(obj)
 	end, false)
@@ -597,6 +600,16 @@ function closeConditionMenu(player, value, id)
 	UI.setAttribute("conditions_panel", "active", "false")
 	selected_object = nil
 	menu_player = nil
+end
+
+-- Triggered when the "Toggle Bloodied" button is pressed in the UI.
+-- Removes the Bloodied condition if the object has it, or add it if it does not.
+function toggleBloodied(obj)
+    if hasCondition(obj, "bloodied") then
+        removeCondition(obj, "bloodied")
+    else
+        addCondition(obj, "bloodied")
+    end
 end
 
 -- Triggered when an inactive condition is clicked in the UI.
