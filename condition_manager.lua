@@ -1,4 +1,4 @@
--- Swedz's D&D 5e Condition Manager [Version 1.6] for Tabletop Simulator
+-- Swedz's D&D 5e Condition Manager [Version 1.7] for Tabletop Simulator
 
 -- These are core variables for the script to work. If these are edited, things may break. Do not touch these values.
 script_guid = self.getGUID()
@@ -7,7 +7,7 @@ button_suffix_condition_inactive = "_inactive"
 conditions_count = 0
 condition_button_width = 1500
 condition_counter_button_width = 250
-selected_object = nil
+selected_objects = nil
 menu_player = nil
 
 -- Some configuration options, if you are strong enough for it.
@@ -380,13 +380,13 @@ function setupConditionableObject(obj)
 	-- Creates the context menu items. Removes them before, just in case it already existed for this object
 	obj.clearContextMenu()
 	obj.addContextMenuItem("Conditions", function(player_color)
-		openConditionMenu(player_color, obj)
+		openConditionMenu(player_color)
 	end, false)
 	obj.addContextMenuItem("Toggle Bloodied", function(player_color)
-        toggleBloodied(obj)
+        toggleBloodied(player_color)
     end, false)
 	obj.addContextMenuItem("Clear Conditions", function(player_color)
-		clearConditions(obj)
+		clearConditions(player_color)
 	end, false)
 	
 	-- Clears the existing buttons (displayed conditions) from the object
@@ -552,15 +552,28 @@ function buildUIXml()
 	return xml
 end
 
+-- Get all of the valid figurine objects the player of the color has selected.
+function getSelectedObjects(player_color)
+	local player = Player[player_color]
+	local selected_objects = player.getSelectedObjects()
+	local valid_selected_objects = {}
+	for _, obj in pairs(selected_objects) do
+		if isFigurine(obj) then
+			table.insert(valid_selected_objects, obj)
+		end
+	end
+	return valid_selected_objects
+end
+
 -- Opens the condition UI for the object.
-function openConditionMenu(player_color, obj)
+function openConditionMenu(player_color)
 	-- If the menu is already opened, prevent the player from opening it
 	if menu_player ~= nil and menu_player ~= player_color and Player[menu_player].seated then
 		Player[player_color].showInfoDialog("The condition menu is already opened by " .. Player[menu_player].steam_name .. ".")
 		return
 	end
 	
-	selected_object = obj
+	selected_objects = getSelectedObjects(player_color)
 	menu_player = player_color
 	UI.setXml(buildUIXml(), {})
 	local function afterLoad()
@@ -571,7 +584,7 @@ function openConditionMenu(player_color, obj)
 		for condition_id, condition in pairs(conditions) do
 			local active_id = condition_id .. button_suffix_condition_active
 			local inactive_id = condition_id .. button_suffix_condition_inactive
-			if hasCondition(obj, condition_id) then
+			if allHasCondition(selected_objects, condition_id) then
 				UI.setAttribute(active_id, "active", "true")
 				UI.setAttribute(inactive_id, "active", "false")
 			else
@@ -598,27 +611,33 @@ end
 function closeConditionMenu(player, value, id)
 	UI.hide("conditions_panel")
 	UI.setAttribute("conditions_panel", "active", "false")
-	selected_object = nil
+	selected_objects = nil
 	menu_player = nil
 end
 
 -- Triggered when the "Toggle Bloodied" button is pressed in the UI.
--- Removes the Bloodied condition if the object has it, or add it if it does not.
-function toggleBloodied(obj)
-    if hasCondition(obj, "bloodied") then
-        removeCondition(obj, "bloodied")
-    else
-        addCondition(obj, "bloodied")
-    end
+-- Removes the Bloodied condition if all the selected objects have it, or add it if they do not.
+function toggleBloodied(player_color)
+	local selected_objects = getSelectedObjects(player_color)
+	local allBloodied = allHasCondition(selected_objects, "bloodied")
+	for _, obj in ipairs(selected_objects) do
+		if allBloodied then
+			removeCondition(obj, "bloodied")
+		elseif not hasCondition(obj, "bloodied") then
+			addCondition(obj, "bloodied")
+		end
+	end
 end
 
 -- Triggered when an inactive condition is clicked in the UI.
 function clickAddCondition(player, _, id)
-	if selected_object == nil then
+	if selected_objects == nil then
 		return
 	end
 	local condition_id = string.gsub(id, button_suffix_condition_inactive, "")
-	addCondition(selected_object, condition_id)
+	for _, obj in ipairs(selected_objects) do
+		addCondition(obj, condition_id)
+	end
 end
 
 -- This will hide the clicked button (inactive condition) and show the active condition button.
@@ -632,11 +651,13 @@ end
 
 -- Triggered when an active condition is clicked in the UI.
 function clickRemoveCondition(player, _, id)
-	if selected_object == nil then
+	if selected_objects == nil then
 		return
 	end
 	local condition_id = string.gsub(id, button_suffix_condition_active, "")
-	removeCondition(selected_object, condition_id)
+	for _, obj in ipairs(selected_objects) do
+		removeCondition(obj, condition_id)
+	end
 end
 
 -- This will hide the clicked button (active condition) and show the inactive condition button.
@@ -650,15 +671,20 @@ function removeCondition(obj, condition_id)
 	UI.hide(condition_id .. button_suffix_condition_active)
 end
 
--- Remove all of the conditions from the object.
-function clearConditions(obj)
+-- Remove all of the conditions from the selected objects of the player.
+function clearConditions(player_color)
+	local selected_objects = getSelectedObjects(player_color)
 	for condition_id, condition in pairs(conditions) do
-		setCondition(obj, condition_id, false)
-		setConditionMetadata(obj, condition_id, nil)
+		for _, obj in ipairs(selected_objects) do
+			setCondition(obj, condition_id, false)
+			setConditionMetadata(obj, condition_id, nil)
+		end
 		UI.show(condition_id .. button_suffix_condition_inactive)
 		UI.hide(condition_id .. button_suffix_condition_active)
 	end
-	setupConditionableObject(obj)
+	for _, obj in ipairs(selected_objects) do
+		setupConditionableObject(obj)
+	end
 end
 
 -- Modify the condition state for an object
@@ -676,6 +702,16 @@ end
 function hasCondition(obj, condition_id)
 	local object_data = default(object_conditions[obj.getGUID()], {})
 	return object_data[condition_id] ~= nil
+end
+
+-- Check if all objects in a table have the following condition
+function allHasCondition(objects, condition_id)
+	for _, obj in ipairs(objects) do
+		if not hasCondition(obj, condition_id) then
+			return false
+		end
+	end
+	return true
 end
 
 -- Get all of the active conditions for an object
